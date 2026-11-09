@@ -1,0 +1,89 @@
+# Parâmetros do Portfólio de BIs de Logística. Nada aqui é sensível.
+empresa:
+  nome: "Aurora Log"
+  aviso: "Dados fictícios, gerados para fins de portfólio."
+
+geracao:
+  semente: 42
+  data_referencia: "2026-10-31"
+  data_inicio: "2026-08-03"        # 90 dias até a data de referência
+  linhas:
+    bi1_ctes: 30000
+    bi2_piso: 8000
+    bi4_viagens: 6000
+    bi4_manifestos: 9000
+    bi5_coletas: 15000
+  operadores_por_unidade: 12
+  couriers_por_unidade: 15
+
+calendario:
+  dias_uteis: [segunda, terca, quarta, quinta, sexta]
+  feriados_nacionais:
+    - "2026-09-07"
+    - "2026-10-12"
+    - "2026-11-02"
+
+regionais:
+  Sao Paulo: [SPO, CPQ]
+  Sudeste: [RJO, BHZ]
+  Sul: [CWB, POA, FLN]
+  Nordeste: [SSA, REC, FOR]
+  Centro-Oeste: [BSB, GYN]
+
+unidades:
+  SPO: {nome: "CD São Paulo", uf: SP}
+  CPQ: {nome: "CD Campinas", uf: SP}
+  RJO: {nome: "CD Rio de Janeiro", uf: RJ}
+  BHZ: {nome: "CD Belo Horizonte", uf: MG}
+  CWB: {nome: "CD Curitiba", uf: PR}
+  POA: {nome: "CD Porto Alegre", uf: RS}
+  FLN: {nome: "CD Florianópolis", uf: SC}
+  SSA: {nome: "CD Salvador", uf: BA}
+  REC: {nome: "CD Recife", uf: PE}
+  FOR: {nome: "CD Fortaleza", uf: CE}
+  BSB: {nome: "CD Brasília", uf: DF}
+  GYN: {nome: "CD Goiânia", uf: GO}
+
+# Nomes inventados; conferir que não coincidem com marcas conhecidas antes de publicar.
+clientes:
+  - Casa Prisma
+  - Mercado Jaspe
+  - Loja Tucano
+  - Eletro Âmbar
+  - Botica Serena
+  - Moda Girassol
+  - Livraria Farol
+  - Pet Baobá
+  - Esporte Quartzo
+  - Tech Colibri
+  - Lar Marfim
+  - Bazar Sabiá
+  - Ótica Lume
+  - Brinquedos Pipa
+  - Empório Cedro
+
+# Metas fictícias e arbitradas. sentido: maior = quanto maior, melhor; menor = quanto menor, melhor.
+# Semáforo: verde atinge a meta; amarelo fica até "tolerancia_amarelo" pontos percentuais fora; vermelho além disso.
+metas:
+  K01_otd:                 {meta: 95.0, sentido: maior, tolerancia_amarelo: 3.0}
+  K07_piso_vencido:        {meta: 5.0,  sentido: menor, tolerancia_amarelo: 3.0}
+  K12_aderencia_forecast:  {meta: 95.0, sentido: maior, tolerancia_amarelo: 5.0}
+  K15_sla_transito:        {meta: 92.0, sentido: maior, tolerancia_amarelo: 3.0}
+  K16_sla_expedicao:       {meta: 95.0, sentido: maior, tolerancia_amarelo: 3.0}
+  K19_pct_transferido:     {meta: 98.0, sentido: maior, tolerancia_amarelo: 1.0}
+  K20_sla_coleta:          {meta: 90.0, sentido: maior, tolerancia_amarelo: 4.0}
+
+faixas:
+  aging_piso_dias: ["0-1", "2-3", "4-7", "8+"]
+  aging_atraso_dias_uteis: ["1", "2-3", "4-5", "6+"]
+  peso_kg: ["0-1", "1-5", "5-30", "30+"]
+
+qualidade:
+  lead_time_max_dias_uteis: 30
+  viagem_max_horas: 96
+  produtividade_max_volumes_hora: 600
+
+caminhos:
+  dados: "src/dados"
+  site: "src"
+  publicacao: "dist"

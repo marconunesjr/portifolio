@@ -1,0 +1,9 @@
+.env
+_prompts/
+referencias/
+logs/
+__pycache__/
+node_modules/
+.pytest_cache/
+.ruff_cache/
+*.pyc
