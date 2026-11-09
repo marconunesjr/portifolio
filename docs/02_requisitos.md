@@ -14,7 +14,7 @@
 | RF09 | Transparência | Cada página mostra a pergunta que responde, a data de referência, o aviso de dados fictícios e uma nota com as fórmulas |
 | RF10 | Anonimização | Nenhum termo de referencias/termos_proibidos.txt aparece em arquivo versionado; pessoas só por código |
 | RF11 | Dados sintéticos | `python etl/gerar_dados.py` gera todas as bases de docs/06; duas execuções com a mesma semente dão arquivos idênticos |
-| RF12 | Publicação | O workflow do GitHub Actions publica `dist/` no GitHub Pages |
+| RF12 | Publicação | O workflow do GitHub Actions publica `dist/` no GitHub Pages do repositório marconunesjr/portifolio; todos os caminhos do site são relativos |
 
 ## Requisitos não funcionais
 | ID | Requisito | Critério de aceite |

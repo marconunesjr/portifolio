@@ -35,8 +35,8 @@ Prazos: [A DEFINIR] (ver pendência P01 em `docs/decisoes.md`).
 
 ## Fase 2 — Publicação e validação
 - [ ] Confirmar com o empregador que a publicação é permitida
-- [ ] Criar o repositório no GitHub e fazer o push
-- [ ] Ativar o GitHub Pages e conferir o site publicado
+- [ ] Fazer o push do ramo `main` para https://github.com/marconunesjr/portifolio.git (remoto `origin` já configurado)
+- [ ] Ativar o GitHub Pages (fonte: GitHub Actions) e conferir o site em https://marconunesjr.github.io/portifolio/
 - [ ] Revisão do autor: números plausíveis, textos e layout em computador e celular
 - [ ] Divulgar o link no LinkedIn e no currículo
 

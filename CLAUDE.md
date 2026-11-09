@@ -37,6 +37,11 @@ Dia útil é segunda a sexta, exceto feriado nacional. A data de referência fic
 - Pessoas aparecem só por código (operador `OP0001`, courier `CR0001`, motorista `MT0001`). Sem nomes, documentos ou endereços.
 - As pastas `_prompts/` e `referencias/` não são versionadas.
 
+## Repositório e publicação
+- Remoto `origin`: https://github.com/marconunesjr/portifolio.git (ramo `main`).
+- O site será servido em https://marconunesjr.github.io/portifolio/, ou seja, dentro de uma subpasta. Usar somente caminhos relativos em links, scripts, estilos e dados; nunca caminhos iniciados por `/`.
+- O push é feito pelo autor, depois da confirmação da pendência P02 de `docs/decisoes.md`.
+
 ## Segredos
 O projeto não usa credenciais. Se surgir alguma, só em `.env`, nunca no código.
 

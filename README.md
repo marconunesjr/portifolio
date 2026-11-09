@@ -24,6 +24,8 @@ ruff check .                  # qualidade do código Python
 Depois, abrir `dist/index.html` no navegador.
 
 ## Publicação
+Repositório: https://github.com/marconunesjr/portifolio. Endereço previsto do site: https://marconunesjr.github.io/portifolio/.
+
 O conteúdo de `dist/` é publicado no GitHub Pages por um workflow do GitHub Actions (ver `docs/05_plano_de_implementacao.md`, Fase 2).
 
 ## Documentação
