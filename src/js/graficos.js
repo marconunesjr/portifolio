@@ -31,6 +31,11 @@ export function cor_semaforo(valor, meta, c = cores()) {
 /** Cria (ou reaproveita) o gráfico no elemento e aplica as opções. */
 export function desenhar(el, opcoes) {
   if (!el) return null;
+  if (typeof echarts === 'undefined') { // CDN indisponível: os KPIs continuam, só o gráfico falta
+    el.innerHTML = '<p class="sub">Gráfico indisponível: não foi possível carregar a biblioteca de gráficos (sem acesso à internet?).</p>';
+    el.style.height = 'auto';
+    return null;
+  }
   // eslint-disable-next-line no-undef
   const grafico = echarts.getInstanceByDom(el) || echarts.init(el, null, { renderer: 'svg' });
   grafico.setOption(opcoes, true);

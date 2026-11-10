@@ -26,6 +26,8 @@ export async function iniciar_bi({ id, bases, modo = 'historico', dominio, aviso
   montar_topo(document.getElementById('topo'), { atual: id, prefixo_paginas: '', prefixo_inicio: '../' });
   const area = document.getElementById('area-bi');
   const carregando = document.getElementById('carregando');
+  let redesenhar_atual = () => {};
+  iniciar_tema(() => redesenhar_atual()); // o botão de tema funciona mesmo antes dos dados chegarem
   try {
     const config = await carregar_config(PASTA_DADOS);
     montar_rodape(document.getElementById('rodape'), config.empresa.aviso);
@@ -62,7 +64,7 @@ export async function iniciar_bi({ id, bases, modo = 'historico', dominio, aviso
       });
     }
 
-    iniciar_tema(redesenhar);
+    redesenhar_atual = redesenhar;
     carregando.remove();
     area.hidden = false;
     redesenhar();

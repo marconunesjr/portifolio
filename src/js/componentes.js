@@ -170,7 +170,7 @@ const TEXTO_SEMAFORO = { verde: '✓ Na meta', amarelo: '! Atenção', vermelho:
 /** Selo do semáforo (cor + ícone + texto). */
 export function selo_semaforo(estado) {
   if (!estado) return '';
-  return `<span class="semaforo semaforo-${estado}" role="status">${TEXTO_SEMAFORO[estado]}</span>`;
+  return `<span class="semaforo semaforo-${estado}">${TEXTO_SEMAFORO[estado]}</span>`;
 }
 
 /**

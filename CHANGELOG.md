@@ -16,6 +16,9 @@ Fase 1: site completo, ainda não publicado (ver pendências P02 e P04 em `docs/
 - `scripts/montar_dist.py` (cópia de `src/` para `dist/`), `scripts/servidor.py` (servidor local com tipos MIME corretos) e workflow `.github/workflows/pages.yml` para o GitHub Pages.
 - Decisões ADR-009 a ADR-016 e pendências P04 e P05 (resolvida) em `docs/decisoes.md`.
 
+### Corrigido
+- Botão de tema funciona antes de os dados carregarem; sem o CDN do ECharts, os KPIs continuam e os gráficos mostram um aviso; selo de semáforo sem anúncio repetido em leitor de tela.
+
 ### Alterado
 - `config/config.yaml`: novas seções `segmentos_clientes` e `cenario` (ofensores e sazonalidade dos dados sintéticos); regional "São Paulo" com acento. Metas e fórmulas não mudaram.
 - ECharts 5.6.0 passou a ser carregado por CDN (jsDelivr) com `integrity` SHA-384, no lugar da cópia em `src/assets/vendor/` (ADR-016).

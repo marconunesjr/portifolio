@@ -99,5 +99,19 @@
 | P01 | Prazo da primeira versão e da publicação: [A DEFINIR] | Não |
 | P02 | Confirmar com o empregador se a publicação de BIs inspirados nos internos é permitida: [A DEFINIR] | Não bloqueia o código; bloqueia a publicação |
 | P03 | Revisão do autor das regras de borda do ADR-007 e das decisões do ADR-006, ADR-011 e ADR-012 | Não |
-| P04 | Conferir manualmente que os nomes fictícios de clientes de `config/config.yaml` não coincidem com marcas conhecidas (docs/08) | Não bloqueia o código; bloqueia a publicação |
+| P04 | Conferir manualmente que os nomes fictícios de clientes de `config/config.yaml` não coincidem com marcas conhecidas (docs/08). Busca na web feita em 09/11/2026 (resultado abaixo); falta a decisão do autor sobre CL04 e CL06 | Não bloqueia o código; bloqueia a publicação |
 | P05 | ~~Falso positivo de anonimização no ECharts local~~ — resolvida em 09/11/2026: ECharts por CDN (ADR-016) | Não |
+
+### Resultado da busca da P04 (09/11/2026)
+Busca na web por cada nome entre aspas. Nenhum dos 15 nomes aparece como empresa com o nome exato. As marcas reais semelhantes não são citadas aqui, para não entrarem no repositório.
+
+| Cliente | Achado | Risco |
+|---|---|---|
+| CL04 Eletro Âmbar | Parte do nome coincide com uma grande empresa real do setor de energia, citada em notícias junto com uma estatal de eletricidade | Alto: é ofensor de OTD nos dados (ADR-007 e `cenario`). Recomenda-se trocar |
+| CL06 Moda Girassol | Existe uma marca real de roupas com a palavra do nome, do mesmo segmento (moda) | Médio: também é ofensor de OTD. Recomenda-se trocar |
+| CL03 Loja Tucano | Existe uma marca real de bolsas e acessórios com a palavra principal do nome | Baixo |
+| CL05 Botica Serena | "Botica" também é nome de linha de uma marca real de cosméticos | Baixo |
+| Demais 11 | Só coincidências genéricas (palavras comuns, lugares, produtos) | Baixo |
+
+Trocar um nome muda apenas `config/config.yaml` e `dim_clientes`; os códigos CL01 a CL15, o cenário e os demais dados continuam iguais.
+

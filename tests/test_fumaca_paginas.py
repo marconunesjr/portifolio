@@ -147,3 +147,18 @@ def test_tema_escuro_alterna(navegador: object, url_base: str) -> None:
     assert {antes, depois} == {"light", "dark"}
     assert not monitor.erros, "\n".join(monitor.erros)
     pagina.context.close()
+
+
+def test_sem_cdn_os_kpis_continuam(navegador: object, url_base: str) -> None:
+    """Se o CDN do ECharts falhar, a página mostra os KPIs e avisa nos gráficos (ADR-016)."""
+    contexto = navegador.new_context(viewport={"width": 1366, "height": 900})
+    contexto.route("**/cdn.jsdelivr.net/**", lambda rota: rota.abort())
+    pagina = contexto.new_page()
+    erros_js: list[str] = []
+    pagina.on("pageerror", lambda e: erros_js.append(str(e)))
+    pagina.goto(url_base + PAGINAS["bi1"], wait_until="networkidle")
+    pagina.wait_for_selector('[data-kpi="K01"]')
+    assert "Gráfico indisponível" in pagina.inner_text("#area-bi")
+    assert pagina.locator(".erro").count() == 0
+    assert not erros_js, "\n".join(erros_js)
+    contexto.close()
