@@ -11,7 +11,7 @@ O autor é patrocinador, usuário e validador. Não há dono de fonte, porque n�
 
 ## Área e classificação
 - Área: Operacional. Subárea principal: nível de serviço e torre de controle, com armazenagem e transporte.
-- Tipo: BI em HTML (site único com página inicial e 5 BIs).
+- Tipo: BI em HTML (site único com página inicial e 6 BIs).
 - Criticidade: baixa (uso pessoal, dados fictícios).
 
 ## Decisão apoiada
@@ -24,6 +24,7 @@ Cada BI simula a decisão operacional que apoiaria numa transportadora de encome
 | Produção do Dia | Se a equipe do turno dá conta do volume previsto |
 | Transporte e Transferências | Que rotas e fornecedores cobrar por atraso |
 | SLA de Coletas | Que unidades e clientes estão com coleta fora do prazo |
+| Contencioso e Indenizações | Onde agir para reduzir processos e perdas com indenização |
 
 ## Situação atual
 Não existe portfólio publicado. Os BIs de referência são internos e não podem ser mostrados; por isso são recriados com layout autoral e dados sintéticos.
@@ -31,15 +32,15 @@ Não existe portfólio publicado. Os BIs de referência são internos e não pod
 ## Meta SMART
 | Letra | Resposta |
 |---|---|
-| S | Site estático com página inicial e 5 BIs interativos da empresa fictícia Aurora Log |
+| S | Site estático com página inicial e 6 BIs interativos da empresa fictícia Aurora Log |
 | M | 6 páginas sem erro no console, 23 KPIs, 4 filtros por BI, testes passando |
 | A | HTML, CSS e JavaScript puros com ECharts; dados sintéticos gerados em Python |
 | R | Peça de portfólio para LinkedIn e currículo |
 | T | [A DEFINIR] |
 
 ## Escopo
-- Página inicial com cartões de acesso aos 5 BIs.
-- 5 BIs com KPIs, metas, comparação com o período anterior, semáforo e filtros.
+- Página inicial com cartões de acesso aos 6 BIs.
+- 6 BIs com KPIs, metas, comparação com o período anterior, semáforo e filtros.
 - Gerador de dados sintéticos reprodutível.
 - Publicação no GitHub Pages.
 

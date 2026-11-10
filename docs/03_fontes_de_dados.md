@@ -22,6 +22,7 @@ De 03/08/2026 a 31/10/2026 (90 dias). A data de referência é 31/10/2026.
 | bi4_viagens | Transporte | Uma viagem | 6.000 | 90 dias |
 | bi4_manifestos | Transporte | Um manifesto de transferência | 9.000 | 90 dias |
 | bi5_coletas | SLA de Coletas | Uma solicitação de coleta | 15.000 | 90 dias |
+| bi6_processos | Contencioso e Indenizações | Um processo de contencioso | 4.000 | abertura até 365 dias antes do histórico |
 
 Se `bi3_producao_hora` passar do limite de peso do RNF03, agregar por dia da semana × hora nos dias anteriores aos últimos 14 e registrar em `docs/decisoes.md`.
 

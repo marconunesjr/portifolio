@@ -52,6 +52,19 @@ function kg(valor) {
   return vazio(valor) ? SEM_DADOS : `${nf(0).format(valor)} kg`;
 }
 
+/** Valor em reais, inteiro: "R$ 146.116". */
+function moeda(valor) {
+  return vazio(valor) ? SEM_DADOS : `R$ ${nf(0).format(valor)}`;
+}
+
+/** Valor em reais abreviado: "R$ 903,6 mil", "R$ 1,2 mi". */
+function moeda_curta(valor) {
+  if (vazio(valor)) return SEM_DADOS;
+  if (Math.abs(valor) >= 1e6) return `R$ ${nf(1).format(valor / 1e6)} mi`;
+  if (Math.abs(valor) >= 1e3) return `R$ ${nf(1).format(valor / 1e3)} mil`;
+  return moeda(valor);
+}
+
 /** "aaaa-mm-dd" → "dd/mm/aaaa". */
 function data(iso) {
   if (!iso) return '';
@@ -79,5 +92,5 @@ function html(texto) {
   }[c]));
 }
 
-Aurora.formato = { SEM_DADOS, numero, pct, inteiro, dias_uteis, horas, kg, data, data_curta, diferenca, html };
+Aurora.formato = { SEM_DADOS, numero, pct, inteiro, dias_uteis, horas, kg, moeda, moeda_curta, data, data_curta, diferenca, html };
 })(globalThis.Aurora = globalThis.Aurora || {});

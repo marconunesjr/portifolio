@@ -52,6 +52,13 @@ flowchart TD
     K20 --> K22[K22 Cancelamento]
     K20 --> K23[K23 Coletas por status]
     A --> K05[K05 Emissões: volume de contexto]
+    K01 --> K24[K24 Litigiosidade]
+    K24 --> K25[K25 Estoque de processos]
+    K24 --> K26[K26 Taxa de êxito]
+    K26 --> K27[K27 Valor pago]
+    K26 --> K30[K30 Acordos]
+    K25 --> K28[K28 Provisão]
+    K25 --> K29[K29 Tempo até o encerramento]
 ```
 
 ## Glossário de KPIs
@@ -108,6 +115,19 @@ Regras do BI 4: viagens canceladas ficam fora de todos os KPIs. O filtro de unid
 | K23 | Coletas por status e unidade | Contagem de coletas por status e por unidade | coletas | sem meta | entre unidades |
 
 Regra do K20: coleta em aberto com prazo até a data de referência conta como fora do prazo; coleta em aberto com prazo futuro fica fora do denominador.
+
+### BI 6 — Contencioso e Indenizações (base bi6_processos; aprovado pelo autor em 09/11/2026)
+| ID | KPI | Fórmula | Unidade | Meta | Comparação |
+|---|---|---|---|---|---|
+| K24 | Litigiosidade | Processos com data_abertura no período ÷ soma de remessas emitidas no período (bi1_emissoes_dia) × 10.000 | processos por 10 mil remessas | sem meta (pendência P06) | período anterior |
+| K25 | Estoque de processos | Processos com data_abertura até o último dia do período e sem data_encerramento até ele, por idade (0–90, 91–180, 181–365, 366+ dias corridos) e por tipo | processos | sem meta | estoque no fim do período anterior |
+| K26 | Taxa de êxito | Processos ganhos ÷ processos ganhos ou perdidos, entre os com data_encerramento no período (acordos ficam fora) | % | ≥ 97% | meta e período anterior |
+| K27 | Valor pago | Soma de valor_pago dos encerrados no período, e em % do valor_pedido deles | R$ | sem meta | período anterior |
+| K28 | Provisão de risco provável | Soma de valor_provisionado dos processos em andamento com risco provável, na data de referência | R$ | sem meta | foto, sem comparação |
+| K29 | Tempo até o encerramento | Média de dias corridos entre data_abertura e data_encerramento dos encerrados no período | dias | sem meta | período anterior |
+| K30 | % de acordos | Encerrados em acordo ÷ encerrados no período | % | sem meta | período anterior |
+
+Regras do BI 6: escopo só de processos ligados à operação (avaria, extravio, atraso); o trabalhista fica fora. Unidade e cliente são os responsáveis pelo processo. Processo encerrado no próprio dia de corte não está mais no estoque.
 
 ## Premissas registradas
 As regras de borda de K01, K04, K15 e K20 (o que entra no denominador e como contar itens em aberto) foram propostas na documentação e estão listadas em `docs/decisoes.md` (ADR-007) para revisão do autor.

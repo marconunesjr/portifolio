@@ -1,6 +1,6 @@
 # Portfólio de BIs de Logística
 
-Site estático com cinco BIs operacionais de logística da **Aurora Log**, uma transportadora de encomendas fictícia. Todos os dados são sintéticos, gerados por script com semente fixa.
+Site estático com seis BIs operacionais de logística da **Aurora Log**, uma transportadora de encomendas fictícia. Todos os dados são sintéticos, gerados por script com semente fixa.
 
 ## BIs
 | BI | Pergunta que responde | KPIs |
@@ -10,11 +10,12 @@ Site estático com cinco BIs operacionais de logística da **Aurora Log**, uma t
 | Produção do Dia | A unidade está produzindo o previsto, hora a hora? | K12 a K14 |
 | Transporte e Transferências | As viagens saem e chegam no horário? | K15 a K19 |
 | SLA de Coletas | Estamos coletando dentro do prazo? | K20 a K23 |
+| Contencioso e Indenizações | Quanto estamos perdendo com processos e indenizações, e por quê? | K24 a K30 |
 
 Cada BI tem filtros de período, unidade, UF/regional e cliente; o KPI principal mostra meta, comparação com o período anterior e semáforo. Fórmulas em `docs/07_metricas_e_regras.md`.
 
 ## Situação
-Fase 1 (v0.1.0) concluída: gerador de dados, 6 páginas, 23 KPIs e testes. A publicação aguarda as pendências P02 e P04 de `docs/decisoes.md`.
+v0.2.0: 7 páginas (inicial + 6 BIs) e 30 KPIs, publicadas em https://marconunesjr.github.io/portifolio/. O BI 6 (Contencioso e Indenizações) entrou nesta versão.
 
 ## Requisitos
 - Python 3.12 ou mais novo
@@ -37,7 +38,7 @@ Para ver o site, basta abrir `dist/index.html` (ou `src/index.html`) com duplo c
 
 ## Como testar
 ```
-python -m pytest                  # calendário, qualidade dos dados, reprodutibilidade, anonimização e fumaça das 6 páginas
+python -m pytest                  # calendário, qualidade dos dados, reprodutibilidade, anonimização e fumaça das 7 páginas
 node --test tests/                # um teste por KPI, com casos de borda
 ruff check .                      # qualidade do código Python
 ```

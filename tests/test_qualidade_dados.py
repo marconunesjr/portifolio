@@ -1,6 +1,6 @@
 """Checagens de qualidade de docs/08 sobre os JSON gravados em src/dados/.
 
-Q01-Q07, L01-L14 e P01-P06 rodam sobre as bases lidas do JSON (o que o site lê).
+Q01-Q07, L01-L16 e P01-P08 rodam sobre as bases lidas do JSON (o que o site lê).
 Q08 (reprodutibilidade) e Q09 (peso) estão em test_reprodutibilidade.py.
 """
 
@@ -10,7 +10,7 @@ import pytest
 
 from qualidade import executar_checagens
 
-IDS = [f"Q0{i}" for i in range(1, 8)] + [f"L{i:02d}" for i in range(1, 15)] + [f"P0{i}" for i in range(1, 7)]
+IDS = [f"Q0{i}" for i in range(1, 8)] + [f"L{i:02d}" for i in range(1, 17)] + [f"P0{i}" for i in range(1, 9)]
 
 
 @pytest.fixture(scope="module")

@@ -33,6 +33,12 @@ Prazos: [A DEFINIR] (ver pendência P01 em `docs/decisoes.md`).
 7. Layout sem rolagem horizontal de 360 px a 1920 px (RNF04).
 8. CHANGELOG com a v0.1.0 e resultados registrados em docs/08.
 
+## Fase 1b — BI 6 Contencioso e Indenizações (v0.2.0) — concluída em 09/11/2026
+- [x] KPIs K24 a K30 aprovados pelo autor e registrados em docs/07
+- [x] Base sintética bi6_processos, com checagens L15, L16, P07 e P08
+- [x] Funções K24 a K30 em `kpis.js` e um teste por KPI
+- [x] Página do BI 6 e navegação atualizada (7 páginas)
+
 ## Fase 2 — Publicação e validação
 - [ ] Confirmar com o empregador que a publicação é permitida
 - [ ] Fazer o push do ramo `main` para https://github.com/marconunesjr/portifolio.git (remoto `origin` já configurado)

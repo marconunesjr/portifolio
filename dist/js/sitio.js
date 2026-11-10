@@ -1,4 +1,4 @@
-/** Mapa do site: os 5 BIs, na ordem de navegação. */
+/** Mapa do site: os 6 BIs, na ordem de navegação. */
 
 (function (Aurora) {
 'use strict';
@@ -28,6 +28,11 @@ const PAGINAS = [
     id: 'bi5', arquivo: 'bi5_sla_coletas.html', titulo: 'SLA de Coletas',
     curto: 'Coletas', pergunta: 'Estamos coletando dentro do prazo?',
     kpis: 'K20 a K23 · SLA de coleta, aging, cancelamento, status por unidade',
+  },
+  {
+    id: 'bi6', arquivo: 'bi6_contencioso.html', titulo: 'Contencioso e Indenizações',
+    curto: 'Contencioso', pergunta: 'Quanto estamos perdendo com processos e indenizações, e por quê?',
+    kpis: 'K24 a K30 · litigiosidade, estoque, taxa de êxito, valor pago, provisão, tempo, acordos',
   },
 ];
 

@@ -368,5 +368,71 @@ function k23_status_unidade(coletas, status_possiveis) {
   return { por_status, por_unidade, total: coletas.length };
 }
 
-Aurora.kpis = { percentual, media, soma, agrupar, por_grupo, limites_faixa, contar_por_faixa, semaforo, variacao, k01_otd, k02_lead_time, k03_aging_atraso, k04_ofensor_pickup, k05_emissoes, k06_baixas_app, k07_piso_vencido, k08_piso_total, k09_aging_piso, classe_vencimento, k10_classificacao_vencimento, k11_nao_entrou, k12_aderencia_forecast, k13_in_out_hora, k14_produtividade_operador, viagem_no_transito, k15_sla_transito, k16_sla_expedicao, k17_tempo_atraso, k18_ocorrencias, k19_transferido, k20_sla_coleta, k21_aging_coleta, k22_cancelamento, k23_status_unidade };
+// ------------------------------------------------------------------ BI 6
+
+/** K24 — Litigiosidade: processos abertos no período ÷ remessas emitidas no período × 10 mil. */
+function k24_litigiosidade(processos_novos, emissoes) {
+  const remessas = soma(emissoes, 'remessas');
+  return {
+    valor: remessas > 0 ? (processos_novos.length / remessas) * 10000 : null,
+    numerador: processos_novos.length,
+    denominador: remessas,
+  };
+}
+
+/** Indica se o processo estava em andamento na data de corte. */
+function em_andamento_em(processo, corte) {
+  return processo.data_abertura <= corte
+    && (processo.data_encerramento === null || processo.data_encerramento > corte);
+}
+
+/**
+ * K25 — Estoque de processos: em andamento na data de corte (fim do período),
+ * por idade (dias corridos desde a abertura) e por tipo.
+ */
+function k25_estoque(processos, corte, faixas) {
+  const estoque = processos.filter((p) => em_andamento_em(p, corte));
+  return {
+    total: estoque.length,
+    faixas: contar_por_faixa(estoque.map((p) => dias_corridos(p.data_abertura, corte)), faixas),
+    por_tipo: contar_por(estoque, 'tipo'),
+    valor_pedido: soma(estoque, 'valor_pedido'),
+  };
+}
+
+/** K26 — Taxa de êxito: ganhos ÷ (ganhos + perdidos) entre os encerrados; acordos ficam fora. */
+function k26_taxa_exito(encerrados) {
+  const decididos = encerrados.filter((p) => p.situacao === 'ganho' || p.situacao === 'perdido');
+  const numerador = decididos.filter((p) => p.situacao === 'ganho').length;
+  return { valor: percentual(numerador, decididos.length), numerador, denominador: decididos.length };
+}
+
+/** K27 — Valor pago (condenações + acordos) dos encerrados e % sobre o valor pedido. */
+function k27_valor_pago(encerrados) {
+  if (!encerrados.length) return { valor: null, pedido: null, pct_pedido: null };
+  const pago = soma(encerrados, 'valor_pago');
+  const pedido = soma(encerrados, 'valor_pedido');
+  return { valor: pago, pedido, pct_pedido: percentual(pago, pedido) };
+}
+
+/** K28 — Provisão de risco provável: soma provisionada dos processos em andamento com risco provável (foto na referência). */
+function k28_provisao(processos) {
+  const provaveis = processos.filter((p) => p.situacao === 'em andamento' && p.risco === 'provável');
+  return { valor: soma(provaveis, 'valor_provisionado'), quantidade: provaveis.length };
+}
+
+/** K29 — Tempo até o encerramento: média de dias corridos entre abertura e encerramento. */
+function k29_tempo_encerramento(encerrados) {
+  const dias = encerrados.filter((p) => p.data_encerramento !== null)
+    .map((p) => dias_corridos(p.data_abertura, p.data_encerramento));
+  return { valor: media(dias), quantidade: dias.length };
+}
+
+/** K30 — % de acordos: acordos ÷ processos encerrados. */
+function k30_acordos(encerrados) {
+  const numerador = encerrados.filter((p) => p.situacao === 'acordo').length;
+  return { valor: percentual(numerador, encerrados.length), numerador, denominador: encerrados.length };
+}
+
+Aurora.kpis = { k24_litigiosidade, em_andamento_em, k25_estoque, k26_taxa_exito, k27_valor_pago, k28_provisao, k29_tempo_encerramento, k30_acordos, percentual, media, soma, agrupar, por_grupo, limites_faixa, contar_por_faixa, semaforo, variacao, k01_otd, k02_lead_time, k03_aging_atraso, k04_ofensor_pickup, k05_emissoes, k06_baixas_app, k07_piso_vencido, k08_piso_total, k09_aging_piso, classe_vencimento, k10_classificacao_vencimento, k11_nao_entrou, k12_aderencia_forecast, k13_in_out_hora, k14_produtividade_operador, viagem_no_transito, k15_sla_transito, k16_sla_expedicao, k17_tempo_atraso, k18_ocorrencias, k19_transferido, k20_sla_coleta, k21_aging_coleta, k22_cancelamento, k23_status_unidade };
 })(globalThis.Aurora = globalThis.Aurora || {});

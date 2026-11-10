@@ -153,3 +153,22 @@ Chave: data + operador_id. Esta base não tem cliente; o filtro de cliente não 
 | unidade_id | texto, FK | Unidade responsável | dim_unidades |
 | cliente_id | texto, FK | Cliente | dim_clientes |
 | motivo_cancelamento | texto, pode ser nulo | Motivo, só para canceladas | remetente ausente, endereço não localizado, desistência do cliente, carga fora do padrão, outros |
+
+## bi6_processos (uma linha por processo de contencioso)
+| Coluna | Tipo | Significado | Unidade / faixa |
+|---|---|---|---|
+| processo_id | texto, PK | Código do processo (fictício) | PR000001 em diante |
+| data_abertura | data | Data de abertura | até 365 dias antes do início do histórico, até a referência |
+| data_encerramento | data, pode ser nulo | Data de encerramento | a partir da abertura; nulo se em andamento |
+| tipo | texto | Motivo | avaria, extravio, atraso |
+| origem | texto | Quem abriu | cliente embarcador, destinatário, órgão de defesa do consumidor |
+| unidade_id | texto, FK | Unidade responsável | dim_unidades |
+| cliente_id | texto, FK | Cliente da carga | dim_clientes |
+| valor_pedido | decimal | Valor reclamado | R$, maior que 0 |
+| valor_provisionado | decimal | Provisão na data de referência | R$; maior que 0 só em andamento com risco provável |
+| valor_pago | decimal | Condenação ou acordo pago | R$; 0 em ganhos e em andamento |
+| situacao | texto | Situação na data de referência | em andamento, acordo, ganho, perdido |
+| risco | texto | Classificação de risco | provável, possível, remoto |
+
+Sem nome de parte, advogado, tribunal ou número de processo real.
+

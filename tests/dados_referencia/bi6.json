@@ -1,0 +1,29 @@
+{
+  "descricao": "Casos de referência do BI 6 (contencioso). Período de 01/10/2026 a 31/10/2026; data de corte do estoque 31/10/2026. Resultados calculados à mão.",
+  "referencia": "2026-10-31",
+  "periodo": {"inicio": "2026-10-01", "fim": "2026-10-31"},
+  "processos": [
+    {"processo_id": "P1", "data_abertura": "2026-10-05", "data_encerramento": "2026-10-20", "tipo": "avaria", "situacao": "ganho", "risco": "remoto", "valor_pedido": 1000, "valor_provisionado": 0, "valor_pago": 0, "unidade_id": "SPO", "cliente_id": "CL01"},
+    {"processo_id": "P2", "data_abertura": "2026-09-01", "data_encerramento": "2026-10-10", "tipo": "extravio", "situacao": "perdido", "risco": "provável", "valor_pedido": 2000, "valor_provisionado": 0, "valor_pago": 1500, "unidade_id": "SSA", "cliente_id": "CL04"},
+    {"processo_id": "P3", "data_abertura": "2026-08-15", "data_encerramento": "2026-10-15", "tipo": "atraso", "situacao": "acordo", "risco": "possível", "valor_pedido": 3000, "valor_provisionado": 0, "valor_pago": 900, "unidade_id": "SPO", "cliente_id": "CL02"},
+    {"processo_id": "P4", "data_abertura": "2026-06-01", "data_encerramento": null, "tipo": "avaria", "situacao": "em andamento", "risco": "provável", "valor_pedido": 5000, "valor_provisionado": 3000, "valor_pago": 0, "unidade_id": "REC", "cliente_id": "CL06"},
+    {"processo_id": "P5", "data_abertura": "2026-10-20", "data_encerramento": null, "tipo": "atraso", "situacao": "em andamento", "risco": "possível", "valor_pedido": 800, "valor_provisionado": 0, "valor_pago": 0, "unidade_id": "SPO", "cliente_id": "CL01"},
+    {"processo_id": "P6", "data_abertura": "2025-10-01", "data_encerramento": "2026-10-31", "tipo": "extravio", "situacao": "ganho", "risco": "remoto", "valor_pedido": 1200, "valor_provisionado": 0, "valor_pago": 0, "unidade_id": "RJO", "cliente_id": "CL03"}
+  ],
+  "emissoes": [
+    {"data": "2026-10-01", "unidade_origem_id": "SPO", "cliente_id": "CL01", "remessas": 400},
+    {"data": "2026-10-02", "unidade_origem_id": "RJO", "cliente_id": "CL02", "remessas": 600}
+  ],
+  "esperado": {
+    "novos_no_periodo": ["P1", "P5"],
+    "encerrados_no_periodo": ["P2", "P3", "P1", "P6"],
+    "k24": {"valor": 20, "numerador": 2, "denominador": 1000},
+    "k25": {"total": 2, "faixas": [{"faixa": "0-90", "quantidade": 1}, {"faixa": "91-180", "quantidade": 1}, {"faixa": "181-365", "quantidade": 0}, {"faixa": "366+", "quantidade": 0}], "por_tipo": {"avaria": 1, "atraso": 1}, "valor_pedido": 5800},
+    "k25_corte_01_10": 4,
+    "k26": {"valor": 66.66666666666667, "numerador": 2, "denominador": 3},
+    "k27": {"valor": 2400, "pedido": 7200, "pct_pedido": 33.333333333333336},
+    "k28": {"valor": 3000, "quantidade": 1},
+    "k29": {"valor": 127.5, "quantidade": 4},
+    "k30": {"valor": 25, "numerador": 1, "denominador": 4}
+  }
+}

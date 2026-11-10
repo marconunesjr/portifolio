@@ -13,6 +13,7 @@ geracao:
     bi4_viagens: 6000
     bi4_manifestos: 9000
     bi5_coletas: 15000
+    bi6_processos: 4000
   operadores_por_unidade: 12
   couriers_por_unidade: 15
 
@@ -72,11 +73,13 @@ metas:
   K16_sla_expedicao:       {meta: 95.0, sentido: maior, tolerancia_amarelo: 3.0}
   K19_pct_transferido:     {meta: 98.0, sentido: maior, tolerancia_amarelo: 1.0}
   K20_sla_coleta:          {meta: 90.0, sentido: maior, tolerancia_amarelo: 4.0}
+  K26_taxa_exito:          {meta: 97.0, sentido: maior, tolerancia_amarelo: 3.0}
 
 faixas:
   aging_piso_dias: ["0-1", "2-3", "4-7", "8+"]
   aging_atraso_dias_uteis: ["1", "2-3", "4-5", "6+"]
   peso_kg: ["0-1", "1-5", "5-30", "30+"]
+  idade_processo_dias: ["0-90", "91-180", "181-365", "366+"]
 
 # Segmento de cada cliente (dim_clientes.segmento).
 segmentos_clientes:
@@ -115,6 +118,14 @@ cenario:
   fator_feriado: 0.3
   volume_producao_dia: 9000             # volumes recebidos por dia útil na rede, aproximado
   volume_emissoes_dia: 6000             # remessas emitidas por dia útil na rede, aproximado
+  # Contencioso (BI 6): processos de clientes e destinatários ligados à operação.
+  contencioso:
+    dias_antes_do_inicio: 365           # processos abertos até 1 ano antes do histórico formam o estoque
+    mediana_dias_encerramento: 150      # duração típica de um processo
+    pct_acordo: 0.35                    # parte dos encerrados que termina em acordo
+    taxa_exito: 0.975                   # ganhos ÷ (ganhos + perdidos) fora dos ofensores
+    taxa_exito_ofensores: 0.90          # nas unidades e clientes ofensores de OTD
+    fator_processos_ofensores: 1.8      # ofensores de OTD geram mais processos
 
 qualidade:
   lead_time_max_dias_uteis: 30

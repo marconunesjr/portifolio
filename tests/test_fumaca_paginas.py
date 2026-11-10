@@ -1,4 +1,4 @@
-"""Teste de fumaça das 6 páginas com Playwright, servindo dist/ dentro da subpasta /portifolio/.
+"""Teste de fumaça das 7 páginas com Playwright, servindo dist/ dentro da subpasta /portifolio/.
 
 Para cada página: abre sem erro no console nem requisição com falha, mostra a pergunta, a data
 de referência, o aviso de dados fictícios e a nota metodológica; não tem rolagem horizontal
@@ -25,9 +25,10 @@ PAGINAS = {
     "bi3": "paginas/bi3_producao_do_dia.html",
     "bi4": "paginas/bi4_transporte_transferencias.html",
     "bi5": "paginas/bi5_sla_coletas.html",
+    "bi6": "paginas/bi6_contencioso.html",
 }
 BIS = [p for p in PAGINAS if p != "inicio"]
-PRINCIPAL = {"bi1": "K01", "bi2": "K07", "bi3": "K12", "bi4": "K15", "bi5": "K20"}
+PRINCIPAL = {"bi1": "K01", "bi2": "K07", "bi3": "K12", "bi4": "K15", "bi5": "K20", "bi6": "K26"}
 
 
 @pytest.fixture(scope="module")

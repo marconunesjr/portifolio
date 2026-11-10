@@ -2,6 +2,16 @@
 
 Formato baseado em versionamento semântico.
 
+## [0.2.0] — 09/11/2026
+### Adicionado
+- BI 6 Contencioso e Indenizações (`paginas/bi6_contencioso.html`): litigiosidade, estoque de processos, taxa de êxito (meta 97%), valor pago, provisão de risco provável, tempo até o encerramento e acordos (K24 a K30), com os 4 filtros.
+- Base sintética `bi6_processos` (4.000 processos) e checagens L15, L16, P07 e P08 de docs/08.
+- Testes de K24 a K30 com casos de borda e o BI 6 no teste de fumaça.
+- ADR-018 e pendência P06 (meta do K24) em `docs/decisoes.md`.
+
+### Alterado
+- Site com 7 páginas e 30 KPIs; navegação, página inicial, README, CLAUDE.md e docs 01, 02, 03, 05, 06, 07 e 08 atualizados.
+
 ## [0.1.0] — 09/11/2026
 Fase 1: site completo, ainda não publicado (ver pendências P02 e P04 em `docs/decisoes.md`).
 

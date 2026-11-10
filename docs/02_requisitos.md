@@ -14,12 +14,13 @@
 | RF09 | Transparência | Cada página mostra a pergunta que responde, a data de referência, o aviso de dados fictícios e uma nota com as fórmulas |
 | RF10 | Anonimização | Nenhum termo de referencias/termos_proibidos.txt aparece em arquivo versionado; pessoas só por código |
 | RF11 | Dados sintéticos | `python etl/gerar_dados.py` gera todas as bases de docs/06; duas execuções com a mesma semente dão arquivos idênticos |
+| RF13 | BI Contencioso e Indenizações | Mostra K24 a K30 conforme docs/07; K26 com meta, comparação e semáforo |
 | RF12 | Publicação | O workflow do GitHub Actions publica `dist/` no GitHub Pages do repositório marconunesjr/portifolio; todos os caminhos do site são relativos |
 
 ## Requisitos não funcionais
 | ID | Requisito | Critério de aceite |
 |---|---|---|
-| RNF01 | Sem erros | 0 erros no console do navegador nas 6 páginas |
+| RNF01 | Sem erros | 0 erros no console do navegador nas 7 páginas |
 | RNF02 | Desempenho | Cada página carrega e mostra os KPIs em até 3 segundos em conexão banda larga; cada filtro responde em até 1 segundo |
 | RNF03 | Peso | Soma dos JSON de `src/dados/` de até 15 MB; nenhum arquivo acima de 5 MB |
 | RNF04 | Responsividade | Layout utilizável de 360 px a 1920 px de largura, sem rolagem horizontal da página |

@@ -545,6 +545,79 @@ def gerar_bi5_coletas(ctx: Contexto) -> pd.DataFrame:
     return df
 
 
+# ---------------------------------------------------------------- BI 6
+
+def gerar_bi6_processos(ctx: Contexto) -> pd.DataFrame:
+    """Processos de contencioso ligados à operação (avaria, extravio, atraso).
+
+    Os processos começam até um ano antes do histórico, para formar o estoque.
+    Unidades e clientes ofensores de OTD geram mais processos e perdem mais.
+    """
+    rng, ref = ctx.rng, ctx.referencia
+    p = ctx.cenario["contencioso"]
+    n = ctx.linhas["bi6_processos"]
+    primeiro = ctx.inicio - np.timedelta64(p["dias_antes_do_inicio"], "D")
+    dias = np.arange(primeiro, ref + np.timedelta64(1, "D"), dtype="datetime64[D]")
+    peso_dia = np.where(ctx.cal.eh_dia_util(dias), 1.0, 0.05)  # protocolo quase só em dia útil
+    abertura = rng.choice(dias, n, p=peso_dia / peso_dia.sum())
+
+    fator = p["fator_processos_ofensores"]
+    ofensora_u = np.isin(ctx.unidades, ctx.cenario["unidades_ofensoras_otd"])
+    ofensor_c = np.isin(ctx.clientes, ctx.cenario["clientes_ofensores_otd"])
+    peso_u = ctx.p_unidade * np.where(ofensora_u, fator, 1.0)
+    peso_c = ctx.p_cliente * np.where(ofensor_c, fator, 1.0)
+    unidade = ctx.sortear(n, ctx.unidades, peso_u / peso_u.sum())
+    cliente = ctx.sortear(n, ctx.clientes, peso_c / peso_c.sum())
+
+    tipos = np.array(dic.TIPOS_PROCESSO)
+    tipo = rng.choice(len(tipos), n, p=[0.35, 0.25, 0.40])
+    origem = np.array(dic.ORIGENS_PROCESSO)[rng.choice(3, n, p=[0.45, 0.35, 0.20])]
+    mediana_valor = np.array([2500.0, 4000.0, 1200.0])[tipo]
+    pedido = np.round(np.clip(rng.lognormal(np.log(mediana_valor), 0.9), 100.0, 200_000.0), 2)
+
+    duracao = np.clip(rng.lognormal(np.log(p["mediana_dias_encerramento"]), 0.55, n), 15, 900).astype(int)
+    encerramento = abertura + duracao.astype("timedelta64[D]")
+    encerrado = encerramento <= ref
+    acordo = rng.random(n) < p["pct_acordo"]
+    ofensor = ofensora_u[unidade] | ofensor_c[cliente]
+    ganho = rng.random(n) < np.where(ofensor, p["taxa_exito_ofensores"], p["taxa_exito"])
+    situacao = np.where(~encerrado, "em andamento",
+                        np.where(acordo, "acordo", np.where(ganho, "ganho", "perdido")))
+
+    riscos = np.array(dic.RISCOS_PROCESSO)
+    pesos_risco = {"em andamento": [0.25, 0.45, 0.30], "perdido": [0.70, 0.25, 0.05],
+                   "acordo": [0.50, 0.40, 0.10], "ganho": [0.05, 0.35, 0.60]}
+    sorteio = rng.random(n)
+    risco = np.empty(n, dtype=object)
+    for nome, pesos in pesos_risco.items():
+        limites = np.cumsum(pesos)
+        sel = situacao == nome
+        risco[sel] = riscos[np.searchsorted(limites, sorteio[sel], side="right").clip(0, 2)]
+
+    provisionado = np.where((situacao == "em andamento") & (risco == "provável"),
+                            np.round(pedido * rng.uniform(0.5, 0.9, n), 2), 0.0)
+    pago = np.round(np.where(situacao == "perdido", pedido * rng.uniform(0.6, 1.0, n),
+                             np.where(situacao == "acordo", pedido * rng.uniform(0.2, 0.6, n), 0.0)), 2)
+
+    df = pd.DataFrame({
+        "processo_id": "",
+        "data_abertura": abertura,
+        "data_encerramento": np.where(encerrado, encerramento, NAT),
+        "tipo": tipos[tipo],
+        "origem": origem,
+        "unidade_id": ctx.unidades[unidade],
+        "cliente_id": ctx.clientes[cliente],
+        "valor_pedido": pedido,
+        "valor_provisionado": provisionado,
+        "valor_pago": pago,
+        "situacao": situacao,
+        "risco": risco.astype(str),
+    })
+    df = _ordenar(df, ["data_abertura", "unidade_id"])
+    df["processo_id"] = _ids("PR", n, 6)
+    return df
+
+
 # ---------------------------------------------------------------- todas
 
 def gerar_todas(config: dict[str, Any]) -> dict[str, pd.DataFrame]:
@@ -564,4 +637,5 @@ def gerar_todas(config: dict[str, Any]) -> dict[str, pd.DataFrame]:
     bases["bi4_viagens"] = gerar_bi4_viagens(ctx)
     bases["bi4_manifestos"] = gerar_bi4_manifestos(ctx, bases["bi4_viagens"])
     bases["bi5_coletas"] = gerar_bi5_coletas(ctx)
+    bases["bi6_processos"] = gerar_bi6_processos(ctx)  # por último: não altera o sorteio das outras bases
     return {nome: bases[nome][dic.BASES[nome].nomes] for nome in dic.BASES}

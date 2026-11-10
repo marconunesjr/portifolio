@@ -1,4 +1,4 @@
-// Página inicial: cartões de acesso aos 5 BIs.
+// Página inicial: cartões de acesso aos 6 BIs.
 
 (function (Aurora) {
 'use strict';

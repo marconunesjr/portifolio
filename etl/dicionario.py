@@ -51,6 +51,10 @@ MOTIVOS_CANCELAMENTO = (
     "remetente ausente", "endereço não localizado", "desistência do cliente",
     "carga fora do padrão", "outros",
 )
+TIPOS_PROCESSO = ("avaria", "extravio", "atraso")
+ORIGENS_PROCESSO = ("cliente embarcador", "destinatário", "órgão de defesa do consumidor")
+SITUACOES_PROCESSO = ("em andamento", "acordo", "ganho", "perdido")
+RISCOS_PROCESSO = ("provável", "possível", "remoto")
 
 U = "dim_unidades"
 C = "dim_clientes"
@@ -168,6 +172,19 @@ BASES: dict[str, Base] = {
         ("coleta_id",),
         {"unidade_id": U, "cliente_id": C},
     ),
+    "bi6_processos": Base(
+        "bi6_processos",
+        (Coluna("processo_id", "texto"), Coluna("data_abertura", "data"),
+         Coluna("data_encerramento", "data", nulo=True),
+         Coluna("tipo", "texto", valores=TIPOS_PROCESSO),
+         Coluna("origem", "texto", valores=ORIGENS_PROCESSO), Coluna("unidade_id", "texto"),
+         Coluna("cliente_id", "texto"), Coluna("valor_pedido", "decimal"),
+         Coluna("valor_provisionado", "decimal"), Coluna("valor_pago", "decimal"),
+         Coluna("situacao", "texto", valores=SITUACOES_PROCESSO),
+         Coluna("risco", "texto", valores=RISCOS_PROCESSO)),
+        ("processo_id",),
+        {"unidade_id": U, "cliente_id": C},
+    ),
 }
 
 # Linhas previstas em docs/03 (Q07 aceita ±10%).
@@ -175,5 +192,5 @@ LINHAS_PREVISTAS = {
     "dim_unidades": 12, "dim_clientes": 15, "dim_calendario": 92,
     "bi1_ctes": 30000, "bi1_emissoes_dia": 16000, "bi1_entregas_courier": 12000,
     "bi2_piso": 8000, "bi3_producao_hora": 120000, "bi3_produtividade_operador": 9000,
-    "bi3_forecast": 8600, "bi4_viagens": 6000, "bi4_manifestos": 9000, "bi5_coletas": 15000,
+    "bi3_forecast": 8600, "bi4_viagens": 6000, "bi4_manifestos": 9000, "bi5_coletas": 15000, "bi6_processos": 4000,
 }

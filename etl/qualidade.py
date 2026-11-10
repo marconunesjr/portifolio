@@ -134,6 +134,10 @@ def q05_datas_na_janela(bases: Bases, config: dict[str, Any]) -> int:
         ("bi5_coletas", "deposito_ponto", ini, ref),
         ("bi5_coletas", "retirada_motorista", ini, ref),
         ("bi5_coletas", "prazo", ini, ref + d(7, "D")),
+        ("bi6_processos", "data_abertura",
+         ini - d(config["cenario"]["contencioso"]["dias_antes_do_inicio"], "D"), ref),
+        ("bi6_processos", "data_encerramento",
+         ini - d(config["cenario"]["contencioso"]["dias_antes_do_inicio"], "D"), ref),
     ]
     return sum(_fora(bases[b][c], mn, mx) for b, c, mn, mx in regras)
 
@@ -292,7 +296,52 @@ def percentuais_por_grupo(b: Bases, ref: np.datetime64) -> dict[str, pd.Series]:
         "K20": sla.groupby(nc["unidade_id"]).mean() * 100,
         "K20_geral": pd.Series([sla.mean() * 100]),
         "K22": (col["status"] == "cancelada").groupby(col["unidade_id"]).mean() * 100,
+        "K26": _exito(b["bi6_processos"]).groupby(b["bi6_processos"]["unidade_id"]).mean() * 100,
+        "K26_geral": pd.Series([_exito(b["bi6_processos"]).mean() * 100]),
+        "K30": _acordo(b["bi6_processos"]).groupby(b["bi6_processos"]["unidade_id"]).mean() * 100,
     }
+
+
+def _exito(processos: pd.DataFrame) -> pd.Series:
+    """Ganho (True) ou perdido (False) dos processos decididos; acordos e em andamento ficam fora."""
+    decididos = processos[processos["situacao"].isin(["ganho", "perdido"])]
+    return decididos["situacao"] == "ganho"
+
+
+def _acordo(processos: pd.DataFrame) -> pd.Series:
+    """Acordo (True) entre os processos encerrados."""
+    encerrados = processos[processos["situacao"] != "em andamento"]
+    return encerrados["situacao"] == "acordo"
+
+
+def l15_processo_datas(b: Bases) -> int:
+    """Encerramento antes da abertura; em andamento com data de encerramento ou encerrado sem ela."""
+    p = b["bi6_processos"]
+    andamento = p["situacao"] == "em andamento"
+    return int((p["data_encerramento"] < p["data_abertura"]).sum()
+               + (andamento & p["data_encerramento"].notna()).sum()
+               + (~andamento & p["data_encerramento"].isna()).sum())
+
+
+def l16_processo_valores(b: Bases) -> int:
+    """Valores negativos; pagamento em processo ganho ou em andamento; provisão fora de 'em andamento' provável."""
+    p = b["bi6_processos"]
+    pedido, provisao, pago = (p[c].astype(float) for c in ("valor_pedido", "valor_provisionado", "valor_pago"))
+    sem_pagamento = p["situacao"].isin(["ganho", "em andamento"])
+    provisiona = (p["situacao"] == "em andamento") & (p["risco"] == "provável")
+    return int((pedido <= 0).sum() + (provisao < 0).sum() + (pago < 0).sum()
+               + (sem_pagamento & (pago > 0)).sum() + (~provisiona & (provisao > 0)).sum())
+
+
+def p08_litigiosidade_ofensoras(b: Bases, config: dict[str, Any]) -> int:
+    """Unidades ofensoras de OTD com litigiosidade (processos por 10 mil remessas) acima da média da rede."""
+    ini = pd.Timestamp(config["geracao"]["data_inicio"])
+    p = b["bi6_processos"]
+    novos = p[p["data_abertura"] >= ini].groupby("unidade_id").size()
+    remessas = b["bi1_emissoes_dia"].groupby("unidade_origem_id")["remessas"].sum()
+    taxa = (novos / remessas * 10_000).fillna(0)
+    media = novos.sum() / remessas.sum() * 10_000
+    return int((taxa.reindex(config["cenario"]["unidades_ofensoras_otd"]).fillna(0) > media).sum())
 
 
 def k12_geral(b: Bases) -> float | None:
@@ -319,7 +368,7 @@ def p03_fim_de_semana(b: Bases, cal: Calendario) -> float | None:
 # ------------------------------------------------------------ execução
 
 def executar_checagens(bases: Bases, config: dict[str, Any]) -> list[Resultado]:
-    """Roda todas as checagens Q01-Q07, L01-L14 e P01-P06 (Q08 e Q09 ficam no gerador)."""
+    """Roda todas as checagens Q01-Q07, L01-L16 e P01-P08 (Q08 e Q09 ficam no gerador)."""
     cal = Calendario.de_config(config)
     ref = cal.referencia
     lim = config["qualidade"]
@@ -376,6 +425,14 @@ def executar_checagens(bases: Bases, config: dict[str, Any]) -> list[Resultado]:
          lambda: round(piores_forn, 1), ">= 10", lambda v: v >= 10),
         ("P06", "SLA de coleta (K20) geral, %", lambda: round(k20, 1), "80 a 95",
          lambda v: 80 <= v <= 95),
+        ("L15", "Processo com datas ou situação inconsistentes", lambda: l15_processo_datas(bases), zero, _zero),
+        ("L16", "Processo com valores inconsistentes", lambda: l16_processo_valores(bases), zero, _zero),
+        ("P07", "Taxa de êxito (K26) geral, %", lambda: round(float(pcts["K26_geral"].iloc[0]), 1), "90 a 99",
+         lambda v: 90 <= v <= 99),
+        ("P08", "Unidades ofensoras de OTD com litigiosidade acima da média",
+         lambda: p08_litigiosidade_ofensoras(bases, config),
+         f">= {len(config['cenario']['unidades_ofensoras_otd'])}",
+         lambda v: v >= len(config["cenario"]["unidades_ofensoras_otd"])),
     ]
     resultados = []
     for ident, descricao, medir, limite, aprovar in itens:

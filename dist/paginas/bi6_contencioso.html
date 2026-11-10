@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contencioso e Indenizações · Aurora Log</title>
+  <meta name="description" content="BI de contencioso da Aurora Log (empresa fictícia): litigiosidade, estoque de processos, taxa de êxito, valor pago, provisão, tempo até o encerramento e acordos. Dados fictícios.">
+  <link rel="icon" href="../assets/icone.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/estilo.css">
+  <script>try { var t = localStorage.getItem('aurora-tema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js" integrity="sha384-pPi0zxBAoDu6+JXW/C68UZLvBUUtU+7zonhif43rqj7pxsGyqyqzcian2Rj37Rss" crossorigin="anonymous" defer></script>
+  <script src="../js/calendario.js" defer></script>
+  <script src="../js/formato.js" defer></script>
+  <script src="../js/kpis.js" defer></script>
+  <script src="../js/filtros.js" defer></script>
+  <script src="../js/dados.js" defer></script>
+  <script src="../js/sitio.js" defer></script>
+  <script src="../js/tema.js" defer></script>
+  <script src="../js/componentes.js" defer></script>
+  <script src="../js/graficos.js" defer></script>
+  <script src="../js/pagina_bi.js" defer></script>
+  <script src="../js/paginas/bi6.js" defer></script>
+</head>
+<body>
+  <header class="topo" id="topo"></header>
+  <main class="conteudo">
+    <section class="intro-bi">
+      <span class="kicker">BI 6 de 6 · Contencioso</span>
+      <h1>Contencioso e Indenizações</h1>
+      <p class="pergunta">Quanto estamos perdendo com processos e indenizações, e por quê?</p>
+      <div class="metadados">
+        <span class="etiqueta">Data de referência: <strong data-referencia>31/10/2026</strong></span>
+        <span class="etiqueta etiqueta-aviso">Dados fictícios</span>
+        <span>K24 a K30 · processos de avaria, extravio e atraso; pessoas e processos só por código</span>
+      </div>
+    </section>
+
+    <form class="filtros" id="filtros" aria-label="Filtros" onsubmit="return false"></form>
+    <p id="carregando" class="carregando">Carregando dados…</p>
+
+    <div id="area-bi" hidden>
+      <section class="kpis" id="kpis" aria-label="Indicadores principais"></section>
+      <section class="paineis">
+        <article class="painel dois-tercos">
+          <h2>Processos novos por dia</h2>
+          <p class="sub">Data de abertura, por tipo de reclamação. Fim de semana quase não tem protocolo.</p>
+          <div class="grafico" id="g-novos" role="img" aria-label="Processos novos por dia e por tipo"></div>
+          <div id="l-novos"></div>
+        </article>
+        <article class="painel terco">
+          <h2>Valor pago por tipo (K27)</h2>
+          <p class="sub">Condenações e acordos dos processos encerrados no período.</p>
+          <div class="grafico" id="g-pago-tipo" role="img" aria-label="Valor pago por tipo de processo"></div>
+        </article>
+        <article class="painel meio">
+          <h2>Taxa de êxito por unidade (K26)</h2>
+          <p class="sub">Pior unidade primeiro. As unidades com OTD ruim no BI 1 também perdem mais processos.</p>
+          <div class="grafico alto" id="g-exito-unidade" role="img" aria-label="Taxa de êxito por unidade"></div>
+          <div id="l-exito-unidade"></div>
+        </article>
+        <article class="painel meio">
+          <h2>Litigiosidade por unidade (K24)</h2>
+          <p class="sub" id="t-litig"></p>
+          <div class="grafico alto" id="g-litig-unidade" role="img" aria-label="Processos novos por 10 mil remessas, por unidade"></div>
+        </article>
+        <article class="painel terco">
+          <h2>Estoque por idade (K25)</h2>
+          <p class="sub">Processos em andamento no último dia do período, por dias desde a abertura.</p>
+          <div class="grafico" id="g-estoque" role="img" aria-label="Estoque de processos por faixa de idade"></div>
+        </article>
+        <article class="painel dois-tercos">
+          <h2>Maiores processos em andamento</h2>
+          <p class="sub">Pelo valor pedido, no último dia do período.</p>
+          <div id="t-maiores"></div>
+        </article>
+      </section>
+    </div>
+
+    <details class="nota">
+      <summary>Nota metodológica e fórmulas</summary>
+      <dl>
+        <dt>K24 — Litigiosidade</dt>
+        <dd>Processos com <code>data_abertura</code> no período ÷ soma de <code>remessas</code> emitidas no período (base de emissões do BI 1) × 10.000. Sem meta definida (pendência P06).</dd>
+        <dt>K25 — Estoque de processos</dt>
+        <dd>Processos abertos até o último dia do período e não encerrados até ele, por idade em dias corridos (0–90, 91–180, 181–365, 366+) e por tipo. Um processo encerrado no próprio dia de corte já não conta.</dd>
+        <dt>K26 — Taxa de êxito (meta ≥ 97%)</dt>
+        <dd>Processos ganhos ÷ processos ganhos ou perdidos, entre os encerrados no período. Acordos ficam fora.</dd>
+        <dt>K27 — Valor pago</dt>
+        <dd>Soma de <code>valor_pago</code> (condenações e acordos) dos encerrados no período, e esse valor em % do <code>valor_pedido</code> dos mesmos processos.</dd>
+        <dt>K28 — Provisão de risco provável</dt>
+        <dd>Soma de <code>valor_provisionado</code> dos processos em andamento com risco provável na data de referência. É uma foto: não reage ao período.</dd>
+        <dt>K29 — Tempo até o encerramento</dt>
+        <dd>Média de dias corridos entre <code>data_abertura</code> e <code>data_encerramento</code> dos encerrados no período.</dd>
+        <dt>K30 — % de acordos</dt>
+        <dd>Processos encerrados em acordo ÷ processos encerrados no período.</dd>
+      </dl>
+      <p>Processos, partes e valores são fictícios; não há número de processo real, tribunal ou nome de pessoa. Unidade é a unidade responsável pelo processo. Semáforo do K26: verde a partir de 97%; amarelo até 3 p.p. abaixo; vermelho além disso.</p>
+    </details>
+  </main>
+  <footer class="rodape" id="rodape"></footer>
+</body>
+</html>

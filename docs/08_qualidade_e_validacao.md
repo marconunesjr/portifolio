@@ -33,6 +33,8 @@ Não há amostra a perfilar: as bases são sintéticas. O contrato esperado est�
 | L12 | Coleta: retirada antes do depósito, ou depósito antes da solicitação | 0 |
 | L13 | Coleta cancelada sem motivo, ou não cancelada com motivo | 0 |
 | L14 | Percentuais calculados acima de 100% (exceto K12) | 0 |
+| L15 | Processo: encerramento antes da abertura; em andamento com data de encerramento, ou encerrado sem ela | 0 |
+| L16 | Processo: valores negativos; pagamento em processo ganho ou em andamento; provisão fora de "em andamento" com risco provável | 0 |
 
 ## Checagens de plausibilidade
 Garantem que os dados contam uma história e não parecem aleatórios.
@@ -45,6 +47,8 @@ Garantem que os dados contam uma história e não parecem aleatórios.
 | P04 | Aderência ao forecast (K12) geral | entre 85% e 110% |
 | P05 | Fornecedor com SLA de trânsito pelo menos 10 pontos abaixo da média | pelo menos 1 |
 | P06 | SLA de coleta (K20) geral | entre 80% e 95% |
+| P07 | Taxa de êxito (K26) geral | entre 90% e 99% |
+| P08 | Unidades ofensoras de OTD com litigiosidade (K24, 90 dias) acima da média da rede | todas |
 
 ## Reconciliação
 Não se aplica: não existe número oficial de referência. No lugar, cada KPI tem um teste com resultado conhecido em `tests/dados_referencia/`.
@@ -76,5 +80,13 @@ Não se aplica: não existe número oficial de referência. No lugar, cada KPI t
 | P04 | Aderência ao forecast geral 97,4% | 85% a 110% |
 | P05 | Pior fornecedor (FN05) 18,6 p.p. abaixo do SLA de trânsito médio | ≥ 10 p.p. |
 | P06 | SLA de coleta geral 88,3% | 80% a 95% |
+
+### v0.2.0 — BI 6 (09/11/2026)
+| ID | Resultado | Limite |
+|---|---|---|
+| Q01 a Q09 | Aprovadas com a base bi6_processos (4.000 linhas); demais bases idênticas às da v0.1.0; 5,88 MB no total | — |
+| L15, L16 | 0 ocorrências | 0 |
+| P07 | Taxa de êxito geral 94,1% | 90% a 99% |
+| P08 | SSA e REC acima da média de litigiosidade | todas as ofensoras |
 
 Os percentuais de L14 e P01–P06 são recalculados em `etl/qualidade.py` e comparados com `src/js/kpis.js` por `tests/test_consistencia_kpis.py` (ADR-013). Cada KPI tem um teste com resultado conhecido em `tests/kpis.test.js`, a partir dos casos de `tests/dados_referencia/`.

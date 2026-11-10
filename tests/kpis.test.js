@@ -221,3 +221,57 @@ test('faixas e variação', () => {
   assert.equal(k.variacao(90, 85), 5);
   assert.equal(k.variacao(90, null), null);
 });
+
+// ------------------------------------------------------------------ BI 6
+
+const bi6 = ler('./dados_referencia/bi6.json');
+const no_periodo = (coluna) => bi6.processos.filter((p) => p[coluna] !== null
+  && p[coluna] >= bi6.periodo.inicio && p[coluna] <= bi6.periodo.fim);
+const novos6 = no_periodo('data_abertura');
+const encerrados6 = no_periodo('data_encerramento');
+
+test('BI 6: o período seleciona novos pela abertura e encerrados pelo encerramento', () => {
+  assert.deepEqual(novos6.map((p) => p.processo_id), bi6.esperado.novos_no_periodo);
+  assert.deepEqual(encerrados6.map((p) => p.processo_id).sort(), [...bi6.esperado.encerrados_no_periodo].sort());
+});
+
+test('K24 Litigiosidade: processos novos por 10 mil remessas; sem remessas → sem dados', () => {
+  assert.deepEqual(k.k24_litigiosidade(novos6, bi6.emissoes), bi6.esperado.k24);
+  assert.equal(k.k24_litigiosidade(novos6, []).valor, null);
+});
+
+test('K25 Estoque: em andamento na data de corte; encerrado no próprio dia de corte sai do estoque', () => {
+  assert.deepEqual(k.k25_estoque(bi6.processos, REF, config.faixas.idade_processo_dias), bi6.esperado.k25);
+  // borda: corte anterior exclui processos abertos depois dele e inclui os encerrados depois dele
+  assert.equal(k.k25_estoque(bi6.processos, '2026-10-01', config.faixas.idade_processo_dias).total,
+    bi6.esperado.k25_corte_01_10);
+});
+
+test('K26 Taxa de êxito: acordos ficam fora; só acordos → sem dados', () => {
+  assert.deepEqual(k.k26_taxa_exito(encerrados6), bi6.esperado.k26);
+  assert.equal(k.k26_taxa_exito(encerrados6.filter((p) => p.situacao === 'acordo')).valor, null);
+  assert.equal(k.semaforo(96, config.metas.K26_taxa_exito), 'amarelo');
+  assert.equal(k.semaforo(97, config.metas.K26_taxa_exito), 'verde');
+});
+
+test('K27 Valor pago e % sobre o pedido; sem encerrados → sem dados', () => {
+  const r = k.k27_valor_pago(encerrados6);
+  assert.equal(r.valor, bi6.esperado.k27.valor);
+  assert.equal(r.pedido, bi6.esperado.k27.pedido);
+  perto(r.pct_pedido, bi6.esperado.k27.pct_pedido, '% do pedido');
+  assert.equal(k.k27_valor_pago([]).valor, null);
+});
+
+test('K28 Provisão: só em andamento com risco provável (perdido provável não conta)', () => {
+  assert.deepEqual(k.k28_provisao(bi6.processos), bi6.esperado.k28);
+});
+
+test('K29 Tempo até o encerramento em dias corridos; sem encerrados → sem dados', () => {
+  assert.deepEqual(k.k29_tempo_encerramento(encerrados6), bi6.esperado.k29);
+  assert.equal(k.k29_tempo_encerramento([]).valor, null);
+});
+
+test('K30 % de acordos entre os encerrados; sem encerrados → sem dados', () => {
+  assert.deepEqual(k.k30_acordos(encerrados6), bi6.esperado.k30);
+  assert.equal(k.k30_acordos([]).valor, null);
+});

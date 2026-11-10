@@ -1,10 +1,10 @@
 # CLAUDE.md — Portfólio de BIs de Logística
 
 ## Projeto
-Site de portfólio com página inicial e 5 BIs interativos de logística da empresa fictícia Aurora Log. Área Operacional, tipo BI_HTML, criticidade baixa. Dados 100% sintéticos.
+Site de portfólio com página inicial e 6 BIs interativos de logística da empresa fictícia Aurora Log. Área Operacional, tipo BI_HTML, criticidade baixa. Dados 100% sintéticos.
 
 ## Meta
-Entregar 6 páginas (inicial + 5 BIs) sem erro no console, com 23 KPIs (K01 a K23), filtros de período, unidade, UF/regional e cliente, publicadas no GitHub Pages.
+Entregar 7 páginas (inicial + 6 BIs) sem erro no console, com 30 KPIs (K01 a K30), filtros de período, unidade, UF/regional e cliente, publicadas no GitHub Pages.
 
 ## Fonte da verdade
 - `docs/07_metricas_e_regras.md`: fórmulas, metas, calendário. Não alterar por conta própria; divergência vai para `docs/decisoes.md`.
