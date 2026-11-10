@@ -20,5 +20,6 @@ Fase 1: site completo, ainda não publicado (ver pendências P02 e P04 em `docs/
 - Botão de tema funciona antes de os dados carregarem; sem o CDN do ECharts, os KPIs continuam e os gráficos mostram um aviso; selo de semáforo sem anúncio repetido em leitor de tela.
 
 ### Alterado
+- Clientes CL04 e CL06 renomeados para "Eletro Seriema" e "Moda Seriguela", porque os nomes antigos lembravam marcas reais (pendência P04).
 - `config/config.yaml`: novas seções `segmentos_clientes` e `cenario` (ofensores e sazonalidade dos dados sintéticos); regional "São Paulo" com acento. Metas e fórmulas não mudaram.
 - ECharts 5.6.0 passou a ser carregado por CDN (jsDelivr) com `integrity` SHA-384, no lugar da cópia em `src/assets/vendor/` (ADR-016).

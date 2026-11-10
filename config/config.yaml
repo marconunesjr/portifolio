@@ -49,9 +49,9 @@ clientes:
   - Casa Prisma
   - Mercado Jaspe
   - Loja Tucano
-  - Eletro Âmbar
+  - Eletro Seriema
   - Botica Serena
-  - Moda Girassol
+  - Moda Seriguela
   - Livraria Farol
   - Pet Baobá
   - Esporte Quartzo
@@ -83,9 +83,9 @@ segmentos_clientes:
   Casa Prisma: casa
   Mercado Jaspe: outros
   Loja Tucano: moda
-  Eletro Âmbar: eletrônicos
+  Eletro Seriema: eletrônicos
   Botica Serena: saúde e beleza
-  Moda Girassol: moda
+  Moda Seriguela: moda
   Livraria Farol: outros
   Pet Baobá: outros
   Esporte Quartzo: moda
@@ -100,7 +100,7 @@ segmentos_clientes:
 cenario:
   clientes_por_unidade: 8               # clientes atendidos por unidade na produção e no forecast
   unidades_ofensoras_otd: [SSA, REC]    # destino com OTD bem abaixo da meta
-  clientes_ofensores_otd: [CL04, CL06]  # Eletro Âmbar e Moda Girassol
+  clientes_ofensores_otd: [CL04, CL06]  # Eletro Seriema e Moda Seriguela
   unidade_ofensora_piso: RJO            # mais piso vencido
   unidade_ofensora_entrada: BHZ         # mais CT-es transferidos sem entrada
   unidade_ofensora_forecast: POA        # produção abaixo do previsto
