@@ -1,5 +1,5 @@
 /**
- * Gráficos com Apache ECharts (carregado como script clássico em assets/vendor).
+ * Gráficos com Apache ECharts 5.6.0 (script clássico carregado do CDN jsDelivr, ver ADR-016).
  * Marcas finas, grade discreta, cores lidas dos tokens CSS (claro e escuro),
  * tooltip em todos os gráficos e nunca dois eixos de valor no mesmo gráfico.
  */

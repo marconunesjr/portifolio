@@ -60,7 +60,7 @@ Não se aplica: não existe número oficial de referência. No lugar, cada KPI t
 | Data | Etapa | Resultado |
 |---|---|---|
 | 09/11/2026 | Etapa 1 (documentação) | Busca de marcadores pendentes e de termos proibidos na documentação: 0 ocorrências |
-| 09/11/2026 | Fase 1 (v0.1.0) | Q01–Q09, L01–L14 e P01–P06: todas aprovadas (detalhe abaixo). Termos proibidos em arquivos versionados: 0 ocorrências fora de `assets/vendor/`; na biblioteca ECharts há um falso positivo dentro do nome em inglês do componente "linha do tempo" (ADR-016) |
+| 09/11/2026 | Fase 1 (v0.1.0) | Q01–Q09, L01–L14 e P01–P06: todas aprovadas (detalhe abaixo). Termos proibidos em arquivos versionados: 0 ocorrências (o ECharts passou a vir de CDN, ADR-016) |
 
 ### Fase 1 — execução de `python etl/gerar_dados.py` (semente 42, referência 31/10/2026)
 | ID | Resultado | Limite |

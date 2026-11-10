@@ -13,7 +13,7 @@ Entregar 6 páginas (inicial + 5 BIs) sem erro no console, com 23 KPIs (K01 a K2
 - `config/config.yaml`: todos os parâmetros. Nada fixo no código.
 
 ## Stack
-- Site: HTML, CSS e JavaScript puros, sem framework e sem build obrigatório. ECharts em versão fixada, copiado para `src/assets/vendor/`.
+- Site: HTML, CSS e JavaScript puros, sem framework e sem build obrigatório. ECharts 5.6.0 em versão fixada, carregado por CDN com verificação de integridade (ADR-016).
 - Dados: Python (pandas, numpy), semente fixa, saída em JSON em `src/dados/`.
 - Testes: pytest (dados, calendário, fumaça com Playwright) e `node --test` (KPIs).
 - Qualidade: ruff.

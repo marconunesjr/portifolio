@@ -41,7 +41,7 @@ python -m pytest                  # calendário, qualidade dos dados, reprodutib
 node --test tests/                # um teste por KPI, com casos de borda
 ruff check .                      # qualidade do código Python
 ```
-O teste de anonimização lê `referencias/termos_proibidos.txt`, que fica fora do Git; sem o arquivo ele é pulado. Depois de mudar qualquer arquivo de `src/`, rode `python scripts/montar_dist.py` antes de fazer commit: o workflow confere que `dist/` é cópia fiel de `src/`.
+As páginas de BI carregam o ECharts 5.6.0 do CDN jsDelivr (com verificação de integridade), então o site e o teste de fumaça precisam de internet. O teste de anonimização lê `referencias/termos_proibidos.txt`, que fica fora do Git; sem o arquivo ele é pulado. Depois de mudar qualquer arquivo de `src/`, rode `python scripts/montar_dist.py` antes de fazer commit: o workflow confere que `dist/` é cópia fiel de `src/`.
 
 ## Estrutura
 ```

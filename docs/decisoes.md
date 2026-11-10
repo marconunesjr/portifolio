@@ -84,14 +84,14 @@
 
 ### ADR-015 — Ferramentas e servidor local
 - **Contexto:** o ECharts precisa de versão fixada; no Windows, `python -m http.server` pode entregar `.js` como `text/plain`, e o navegador recusa módulos JavaScript assim. O site também precisa funcionar dentro de uma subpasta.
-- **Decisão:** ECharts 5.6.0 copiado de `cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js` para `src/assets/vendor/`. `scripts/servidor.py` serve uma pasta com tipos MIME corretos sob `/portifolio/`, como no GitHub Pages; o teste de fumaça usa o mesmo servidor. `dist/` é versionada e o workflow confere que ela é cópia fiel de `src/` antes de publicar. `node --test` exige Node 20 ou mais novo.
+- **Decisão:** ECharts 5.6.0 com versão fixada (inicialmente copiado para `src/assets/vendor/`; depois carregado por CDN, ver ADR-016). `scripts/servidor.py` serve uma pasta com tipos MIME corretos sob `/portifolio/`, como no GitHub Pages; o teste de fumaça usa o mesmo servidor. `dist/` é versionada e o workflow confere que ela é cópia fiel de `src/` antes de publicar. `node --test` exige Node 20 ou mais novo.
 - **Consequências:** `python scripts/servidor.py` substitui `python -m http.server` nas instruções.
 
-### ADR-016 — Falso positivo da checagem de anonimização na biblioteca ECharts
-- **Contexto:** a busca de termos proibidos ignora maiúsculas e minúsculas e procura trechos de palavra. Um dos termos curtos aparece dentro do nome em inglês do componente "linha do tempo", que faz parte do núcleo de qualquer build do ECharts 5.6.0 (completa ou "common"). Os únicos achados em `src/` e `dist/` estão em `assets/vendor/echarts.min.js`, código de terceiros não editado.
-- **Decisão:** manter o ECharts copiado em `src/assets/vendor/` (stack definida no CLAUDE.md) e excluir a pasta `vendor/` da checagem automática (`tests/test_anonimizacao.py`). Comando manual equivalente, no Windows PowerShell 5.1: `Get-ChildItem -Path src,dist,etl,tests,docs,README.md -Recurse -File | Where-Object FullName -notmatch '\\vendor\\' | Select-String -Pattern '<termos>'`.
-- **Alternativas:** carregar o ECharts por CDN com versão fixada (remove o arquivo do repositório, mas o site passa a depender de um serviço externo); alterar o arquivo minificado da biblioteca (frágil e difícil de atualizar).
-- **Consequências:** fora de `vendor/`, 0 ocorrências. Revisão do autor na pendência P05.
+### ADR-016 — ECharts carregado por CDN com versão fixada
+- **Contexto:** a busca de termos proibidos ignora maiúsculas e minúsculas e procura trechos de palavra. Um dos termos curtos aparece dentro do nome em inglês do componente "linha do tempo", que faz parte do núcleo de qualquer build do ECharts 5.6.0 (completa ou "common"). Com a biblioteca copiada em `src/assets/vendor/`, a checagem de docs/08 encontrava esse falso positivo em `src/` e `dist/`.
+- **Decisão (autor, 09/11/2026):** remover a cópia local e carregar o ECharts de `https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js`, com versão fixada e verificação de integridade (atributo `integrity` SHA-384, igual ao do arquivo antes versionado). Isso substitui, para o ECharts, a regra do CLAUDE.md de copiar a biblioteca para `src/assets/vendor/`.
+- **Alternativas:** manter a cópia local e excluir `vendor/` da checagem (descartada pelo autor); alterar o arquivo minificado da biblioteca (frágil).
+- **Consequências:** 0 ocorrências de termos proibidos em todos os arquivos versionados, sem exceção. As páginas de BI e o teste de fumaça precisam de acesso à internet para carregar os gráficos; se o CDN estiver fora do ar, os gráficos não aparecem. A integridade impede que uma versão alterada seja executada.
 
 ## Pendências
 | ID | Pendência | Bloqueia a Fase 1? |
@@ -100,4 +100,4 @@
 | P02 | Confirmar com o empregador se a publicação de BIs inspirados nos internos é permitida: [A DEFINIR] | Não bloqueia o código; bloqueia a publicação |
 | P03 | Revisão do autor das regras de borda do ADR-007 e das decisões do ADR-006, ADR-011 e ADR-012 | Não |
 | P04 | Conferir manualmente que os nomes fictícios de clientes de `config/config.yaml` não coincidem com marcas conhecidas (docs/08) | Não bloqueia o código; bloqueia a publicação |
-| P05 | Aprovar a exclusão de `assets/vendor/` na checagem de termos proibidos (ADR-016) ou trocar o ECharts local por CDN | Não |
+| P05 | ~~Falso positivo de anonimização no ECharts local~~ — resolvida em 09/11/2026: ECharts por CDN (ADR-016) | Não |

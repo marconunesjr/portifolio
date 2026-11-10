@@ -14,7 +14,8 @@ Fase 1: site completo, ainda não publicado (ver pendências P02 e P04 em `docs/
 - Identidade visual própria com temas claro e escuro, layout de 360 px a 1920 px.
 - Testes: um por KPI com casos de borda (`node --test tests/`); calendário, qualidade dos dados, reprodutibilidade, consistência Python × JavaScript, anonimização e fumaça das 6 páginas com Playwright servindo `dist/` na subpasta `/portifolio/` (`python -m pytest`).
 - `scripts/montar_dist.py` (cópia de `src/` para `dist/`), `scripts/servidor.py` (servidor local com tipos MIME corretos) e workflow `.github/workflows/pages.yml` para o GitHub Pages.
-- Decisões ADR-009 a ADR-016 e pendências P04 e P05 em `docs/decisoes.md`.
+- Decisões ADR-009 a ADR-016 e pendências P04 e P05 (resolvida) em `docs/decisoes.md`.
 
 ### Alterado
 - `config/config.yaml`: novas seções `segmentos_clientes` e `cenario` (ofensores e sazonalidade dos dados sintéticos); regional "São Paulo" com acento. Metas e fórmulas não mudaram.
+- ECharts 5.6.0 passou a ser carregado por CDN (jsDelivr) com `integrity` SHA-384, no lugar da cópia em `src/assets/vendor/` (ADR-016).

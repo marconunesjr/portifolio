@@ -22,7 +22,7 @@ def _arquivos(raiz: Path) -> list[Path]:
             arquivos.append(caminho)
         elif caminho.is_dir():
             arquivos += [a for a in caminho.rglob("*") if a.is_file() and a.suffix in EXTENSOES
-                         and "vendor" not in a.parts and "__pycache__" not in a.parts]
+                         and "__pycache__" not in a.parts]
     return arquivos
 
 
