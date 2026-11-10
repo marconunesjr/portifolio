@@ -1,0 +1,45 @@
+{
+  "descricao": "Casos de referência dos BIs 2 e 3. Referência 31/10/2026. Resultados calculados à mão.",
+  "referencia": "2026-10-31",
+  "piso": [
+    {"cte_id": "P1", "unidade_atual_id": "SPO", "cliente_id": "CL01", "limite_cliente": "2026-10-25", "data_evento": "2026-10-30", "transferido_em": null, "entrou_unidade": true},
+    {"cte_id": "P2", "unidade_atual_id": "SPO", "cliente_id": "CL02", "limite_cliente": "2026-10-31", "data_evento": "2026-10-28", "transferido_em": "2026-10-28", "entrou_unidade": false},
+    {"cte_id": "P3", "unidade_atual_id": "RJO", "cliente_id": "CL01", "limite_cliente": "2026-11-05", "data_evento": "2026-10-24", "transferido_em": "2026-10-24", "entrou_unidade": true},
+    {"cte_id": "P4", "unidade_atual_id": "RJO", "cliente_id": "CL01", "limite_cliente": "2026-10-11", "data_evento": "2026-10-11", "transferido_em": "2026-10-11", "entrou_unidade": false},
+    {"cte_id": "P5", "unidade_atual_id": "RJO", "cliente_id": "CL03", "limite_cliente": "2026-11-10", "data_evento": "2026-10-31", "transferido_em": null, "entrou_unidade": false}
+  ],
+  "producao": [
+    {"data": "2026-10-01", "hora": 8, "unidade_id": "SPO", "cliente_id": "CL01", "volumes_in": 100, "volumes_out": 80},
+    {"data": "2026-10-01", "hora": 9, "unidade_id": "SPO", "cliente_id": "CL01", "volumes_in": 50, "volumes_out": 60},
+    {"data": "2026-10-02", "hora": 8, "unidade_id": "SPO", "cliente_id": "CL02", "volumes_in": 40, "volumes_out": 30}
+  ],
+  "forecast": [
+    {"data": "2026-10-01", "unidade_id": "SPO", "cliente_id": "CL01", "volumes_previstos": 200},
+    {"data": "2026-10-02", "unidade_id": "SPO", "cliente_id": "CL02", "volumes_previstos": 30}
+  ],
+  "produtividade": [
+    {"data": "2026-10-01", "unidade_id": "SPO", "operador_id": "OP0001", "volumes": 800, "horas_trabalhadas": 8.0},
+    {"data": "2026-10-02", "unidade_id": "SPO", "operador_id": "OP0001", "volumes": 900, "horas_trabalhadas": 9.0},
+    {"data": "2026-10-01", "unidade_id": "SPO", "operador_id": "OP0002", "volumes": 600, "horas_trabalhadas": 4.0},
+    {"data": "2026-10-01", "unidade_id": "RJO", "operador_id": "OP0013", "volumes": 500, "horas_trabalhadas": 5.0}
+  ],
+  "esperado": {
+    "k07": {"valor": 40.0, "numerador": 2, "denominador": 5},
+    "k08": {"total": 5, "por_unidade": {"SPO": 2, "RJO": 3}, "por_cliente": {"CL01": 3, "CL02": 1, "CL03": 1}},
+    "k09": {"faixas": [{"faixa": "0-1", "quantidade": 2}, {"faixa": "2-3", "quantidade": 1}, {"faixa": "4-7", "quantidade": 1}, {"faixa": "8+", "quantidade": 1}], "total": 5},
+    "k10": {"vencido": 2, "vence_hoje": 1, "a_vencer": 2},
+    "k11": {"total": 2, "por_unidade": {"SPO": 1, "RJO": 1}},
+    "k12": {"valor": 82.6086956521739, "realizado": 190, "previsto": 230},
+    "k12_acima_de_100": 133.33333333333334,
+    "k13": {
+      "por_hora": [{"hora": 8, "volumes_in": 140, "volumes_out": 110}, {"hora": 9, "volumes_in": 50, "volumes_out": 60}],
+      "matriz": [
+        {"data": "2026-10-01", "hora": 8, "volumes_in": 100, "volumes_out": 80},
+        {"data": "2026-10-01", "hora": 9, "volumes_in": 50, "volumes_out": 60},
+        {"data": "2026-10-02", "hora": 8, "volumes_in": 40, "volumes_out": 30}
+      ],
+      "media_dia_in": 95, "total_in": 190, "total_out": 170
+    },
+    "k14": {"valor": 107.6923076923077, "por_operador": {"OP0001": 100, "OP0002": 150, "OP0013": 100}, "por_unidade": {"SPO": 109.52380952380952, "RJO": 100}}
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "descricao": "Casos de referência dos BIs 4 e 5. Referência 31/10/2026; feriado em 12/10/2026. Resultados calculados à mão.",
+  "referencia": "2026-10-31",
+  "viagens": [
+    {"viagem_id": "V1", "status": "finalizada", "saida_prevista": "2026-10-01T22:00", "saida_real": "2026-10-01T21:50", "termino_previsto": "2026-10-02T06:00", "termino_real": "2026-10-02T05:30", "ocorrencia": "sem ocorrência", "fornecedor_id": "FN01"},
+    {"viagem_id": "V2", "status": "finalizada", "saida_prevista": "2026-10-02T20:00", "saida_real": "2026-10-02T20:30", "termino_previsto": "2026-10-03T08:00", "termino_real": "2026-10-03T08:15", "ocorrencia": "atraso no carregamento", "fornecedor_id": "FN05"},
+    {"viagem_id": "V3", "status": "finalizada", "saida_prevista": "2026-10-03T10:00", "saida_real": "2026-10-03T10:00", "termino_previsto": "2026-10-03T14:00", "termino_real": "2026-10-03T17:00", "ocorrencia": "trânsito", "fornecedor_id": "FN05"},
+    {"viagem_id": "V4", "status": "em viagem", "saida_prevista": "2026-10-31T22:00", "saida_real": "2026-10-31T22:10", "termino_previsto": "2026-11-01T06:00", "termino_real": null, "ocorrencia": null, "fornecedor_id": "FN02"},
+    {"viagem_id": "V5", "status": "cancelada", "saida_prevista": "2026-10-05T08:00", "saida_real": null, "termino_previsto": "2026-10-05T12:00", "termino_real": null, "ocorrencia": "clima", "fornecedor_id": "FN02"},
+    {"viagem_id": "V6", "status": "programada", "saida_prevista": "2026-10-31T23:00", "saida_real": null, "termino_previsto": "2026-11-01T05:00", "termino_real": null, "ocorrencia": null, "fornecedor_id": "FN03"},
+    {"viagem_id": "V7", "status": "finalizada", "saida_prevista": "2026-10-04T01:00", "saida_real": "2026-10-04T00:55", "termino_previsto": "2026-10-04T09:00", "termino_real": "2026-10-04T11:00", "ocorrencia": "trânsito", "fornecedor_id": "FN01"}
+  ],
+  "manifestos": [
+    {"manifesto_id": "M1", "ctes_total": 100, "ctes_transferidos": 98},
+    {"manifesto_id": "M2", "ctes_total": 50, "ctes_transferidos": 50},
+    {"manifesto_id": "M3", "ctes_total": 10, "ctes_transferidos": 7}
+  ],
+  "coletas": [
+    {"coleta_id": "C1", "solicitacao": "2026-10-01", "deposito_ponto": "2026-10-01", "retirada_motorista": "2026-10-02", "prazo": "2026-10-02", "status": "coletada", "unidade_id": "SPO", "motivo_cancelamento": null},
+    {"coleta_id": "C2", "solicitacao": "2026-10-08", "deposito_ponto": "2026-10-09", "retirada_motorista": "2026-10-13", "prazo": "2026-10-13", "status": "coletada", "unidade_id": "SPO", "motivo_cancelamento": null},
+    {"coleta_id": "C3", "solicitacao": "2026-10-05", "deposito_ponto": "2026-10-05", "retirada_motorista": "2026-10-08", "prazo": "2026-10-06", "status": "coletada", "unidade_id": "SPO", "motivo_cancelamento": null},
+    {"coleta_id": "C4", "solicitacao": "2026-10-20", "deposito_ponto": "2026-10-20", "retirada_motorista": null, "prazo": "2026-10-21", "status": "depositada", "unidade_id": "SPO", "motivo_cancelamento": null},
+    {"coleta_id": "C5", "solicitacao": "2026-10-30", "deposito_ponto": null, "retirada_motorista": null, "prazo": "2026-11-03", "status": "solicitada", "unidade_id": "REC", "motivo_cancelamento": null},
+    {"coleta_id": "C6", "solicitacao": "2026-10-10", "deposito_ponto": null, "retirada_motorista": null, "prazo": "2026-10-13", "status": "cancelada", "unidade_id": "REC", "motivo_cancelamento": "remetente ausente"},
+    {"coleta_id": "C7", "solicitacao": "2026-10-15", "deposito_ponto": null, "retirada_motorista": null, "prazo": "2026-10-16", "status": "cancelada", "unidade_id": "REC", "motivo_cancelamento": "outros"}
+  ],
+  "esperado": {
+    "k15": {"valor": 50.0, "numerador": 2, "denominador": 4},
+    "k16": {"valor": 60.0, "numerador": 3, "denominador": 5},
+    "k17": {"valor": 1.75, "quantidade": 3},
+    "k18": {"pareto": [{"ocorrencia": "trânsito", "viagens": 2, "pct_acumulado": 66.66666666666667}, {"ocorrencia": "atraso no carregamento", "viagens": 1, "pct_acumulado": 100}], "total": 3},
+    "k19": {"valor": 96.875, "numerador": 155, "denominador": 160},
+    "k20": {"valor": 50.0, "numerador": 2, "denominador": 4},
+    "k21": {"valor": 1.6666666666666667, "quantidade": 3},
+    "k22": {"valor": 28.571428571428573, "numerador": 2, "denominador": 7, "por_motivo": [{"motivo": "outros", "quantidade": 1, "valor": 14.285714285714286}, {"motivo": "remetente ausente", "quantidade": 1, "valor": 14.285714285714286}]},
+    "k23": {
+      "por_status": {"solicitada": 1, "depositada": 1, "coletada": 3, "cancelada": 2},
+      "por_unidade": [
+        {"unidade_id": "REC", "solicitada": 1, "depositada": 0, "coletada": 0, "cancelada": 2, "total": 3},
+        {"unidade_id": "SPO", "solicitada": 0, "depositada": 1, "coletada": 3, "cancelada": 0, "total": 4}
+      ],
+      "total": 7
+    }
+  }
+}

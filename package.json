@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-bis-logistica",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Portfólio de BIs de logística da empresa fictícia Aurora Log (dados fictícios)",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
