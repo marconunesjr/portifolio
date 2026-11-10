@@ -29,11 +29,14 @@ LIMITE_TOTAL_MB = 15.0
 
 
 def serializar_bases(config: dict[str, Any]) -> dict[str, bytes]:
-    """Gera todas as bases e devolve o conteúdo JSON de cada arquivo."""
+    """Gera todas as bases e devolve o conteúdo de cada arquivo (.json e o .js lido pelo site)."""
     bases = gerar_todas(config)
-    arquivos = {f"{nome}.json": dados_io.serializar(dados_io.codificar(df, dic.BASES[nome]))
-                for nome, df in bases.items()}
-    arquivos["config_site.json"] = dados_io.serializar(config_do_site(config))
+    objetos = {nome: dados_io.codificar(df, dic.BASES[nome]) for nome, df in bases.items()}
+    objetos["config_site"] = config_do_site(config)
+    arquivos: dict[str, bytes] = {}
+    for nome, objeto in objetos.items():
+        arquivos[f"{nome}.json"] = dados_io.serializar(objeto)
+        arquivos[f"{nome}.js"] = dados_io.serializar_script(nome, objeto)
     return arquivos
 
 
@@ -61,7 +64,7 @@ def hash_arquivos(arquivos: dict[str, bytes]) -> str:
 
 def checagens_de_arquivo(arquivos: dict[str, bytes], reproduzido: dict[str, bytes]) -> list[Resultado]:
     """Q08 (reprodutibilidade) e Q09 (peso dos arquivos)."""
-    mb = {nome: len(conteudo) / 1e6 for nome, conteudo in arquivos.items()}
+    mb = {nome: len(conteudo) / 1e6 for nome, conteudo in arquivos.items() if nome.endswith(".json")}
     total = sum(mb.values())
     maior = max(mb.values())
     iguais = hash_arquivos(arquivos) == hash_arquivos(reproduzido)

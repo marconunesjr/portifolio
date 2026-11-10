@@ -2,8 +2,10 @@
 // Usado por tests/test_consistencia_kpis.py.
 import { readFileSync } from 'node:fs';
 
-import { decodificar } from '../../src/js/dados.js';
-import * as K from '../../src/js/kpis.js';
+import { Aurora } from './aurora.mjs';
+
+const { decodificar } = Aurora.dados;
+const K = Aurora.kpis;
 
 const ler = (nome) => decodificar(JSON.parse(readFileSync(new URL(`../../src/dados/${nome}.json`, import.meta.url), 'utf-8')));
 const config = JSON.parse(readFileSync(new URL('../../src/dados/config_site.json', import.meta.url), 'utf-8'));

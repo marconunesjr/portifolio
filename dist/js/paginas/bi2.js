@@ -1,10 +1,14 @@
 // BI 2 — Piso – Vencimento por Cliente: "O que está parado no piso e o que vence primeiro?" (K07 a K11)
-import { cartao_kpi, legenda, tabela } from '../componentes.js';
-import { dias_corridos } from '../calendario.js';
-import * as F from '../formato.js';
-import { barras_horizontais, colunas, cores } from '../graficos.js';
-import * as K from '../kpis.js';
-import { iniciar_bi } from '../pagina_bi.js';
+
+(function (Aurora) {
+'use strict';
+
+const { cartao_kpi, legenda, tabela } = Aurora.componentes;
+const { dias_corridos } = Aurora.calendario;
+const { barras_horizontais, colunas, cores } = Aurora.graficos;
+const { iniciar_bi } = Aurora.pagina_bi;
+const F = Aurora.formato;
+const K = Aurora.kpis;
 
 // Foto do piso: o período filtra limite_cliente; a unidade é a unidade atual.
 const PISO = { data: 'limite_cliente', unidade: 'unidade_atual_id', cliente: 'cliente_id' };
@@ -129,3 +133,4 @@ iniciar_bi({
   aviso: 'Foto do piso na data de referência: o filtro de período atua sobre o limite do cliente e a unidade é a unidade onde a carga está.',
   desenhar,
 });
+})(globalThis.Aurora = globalThis.Aurora || {});

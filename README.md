@@ -31,9 +31,9 @@ python -m playwright install chromium
 ```
 python etl/gerar_dados.py         # gera os JSON sintéticos em src/dados/ e roda as checagens de docs/08
 python scripts/montar_dist.py     # copia src/ para dist/
-python scripts/servidor.py        # abre dist/ em http://127.0.0.1:8000/portifolio/
+python scripts/servidor.py        # opcional: serve dist/ em http://127.0.0.1:8000/portifolio/, como no GitHub Pages
 ```
-O site precisa ser aberto por um servidor HTTP (o navegador bloqueia a leitura dos JSON a partir de `file://`). Use `scripts/servidor.py` em vez de `python -m http.server`: no Windows, este último pode entregar `.js` com o tipo errado. Para desenvolver direto em `src/`: `python scripts/servidor.py --pasta src`.
+Para ver o site, basta abrir `dist/index.html` (ou `src/index.html`) com duplo clique: as páginas funcionam direto do disco, sem servidor, e mostram os KPIs em cerca de 1 a 1,5 s. O servidor é opcional e imita o endereço com subpasta do GitHub Pages; use `scripts/servidor.py` em vez de `python -m http.server`, que no Windows pode entregar `.js` com o tipo errado.
 
 ## Como testar
 ```

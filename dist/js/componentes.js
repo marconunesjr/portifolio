@@ -3,10 +3,13 @@
  * semáforo, legenda e tabela. Geram HTML a partir de dados já calculados.
  */
 
-import { somar_dias } from './calendario.js';
-import { data, data_curta, diferenca, html } from './formato.js';
-import { semaforo, variacao } from './kpis.js';
-import { PAGINAS } from './sitio.js';
+(function (Aurora) {
+'use strict';
+
+const { somar_dias } = Aurora.calendario;
+const { data, data_curta, diferenca, html } = Aurora.formato;
+const { semaforo, variacao } = Aurora.kpis;
+const { PAGINAS } = Aurora.sitio;
 
 const LOGO = `<svg viewBox="0 0 32 32" aria-hidden="true">
   <defs><linearGradient id="aurora-g" x1="0" y1="0" x2="1" y2="1">
@@ -25,7 +28,7 @@ const ICONE_LUA = '<svg class="lua" viewBox="0 0 24 24" fill="none" stroke="curr
  * @param {HTMLElement} el
  * @param {{atual: string, prefixo_paginas: string, prefixo_inicio: string}} opcoes
  */
-export function montar_topo(el, { atual, prefixo_paginas, prefixo_inicio }) {
+function montar_topo(el, { atual, prefixo_paginas, prefixo_inicio }) {
   const itens = [
     `<li><a href="${prefixo_inicio}index.html"${atual === 'inicio' ? ' aria-current="page"' : ''}>Início</a></li>`,
     ...PAGINAS.map((p) => `<li><a href="${prefixo_paginas}${p.arquivo}"${p.id === atual ? ' aria-current="page"' : ''}>${html(p.curto)}</a></li>`),
@@ -38,7 +41,7 @@ export function montar_topo(el, { atual, prefixo_paginas, prefixo_inicio }) {
 }
 
 /** Monta o rodapé com o aviso de dados fictícios. */
-export function montar_rodape(el, aviso) {
+function montar_rodape(el, aviso) {
   el.innerHTML = `<span>Aurora Log é uma empresa fictícia. ${html(aviso)}</span>
     <span>HTML, CSS e JavaScript puros · gráficos com Apache ECharts</span>`;
 }
@@ -72,7 +75,7 @@ function opcoes_periodo(modo, dominio, ref) {
  * Monta a barra de filtros (período, unidade, UF/regional, cliente).
  * @returns {{estado: () => object, resumo: (texto: string) => void}}
  */
-export function montar_filtros(el, { dim_unidades, dim_clientes, regionais, modo, dominio, ref, padrao, aviso, ao_mudar }) {
+function montar_filtros(el, { dim_unidades, dim_clientes, regionais, modo, dominio, ref, padrao, aviso, ao_mudar }) {
   const periodos = opcoes_periodo(modo, dominio, ref);
   const ufs = [...new Set(dim_unidades.map((u) => u.uf))].sort();
   el.innerHTML = `
@@ -153,7 +156,7 @@ export function montar_filtros(el, { dim_unidades, dim_clientes, regionais, modo
 }
 
 /** Texto do período e da comparação, para a linha de resumo dos filtros. */
-export function texto_periodo(estado, anterior, modo) {
+function texto_periodo(estado, anterior, modo) {
   if (modo === 'foto') {
     return `Vencimentos de ${data(estado.inicio)} a ${data(estado.fim)} · foto do dia, sem comparação com período anterior.`;
   }
@@ -168,7 +171,7 @@ export function texto_periodo(estado, anterior, modo) {
 const TEXTO_SEMAFORO = { verde: '✓ Na meta', amarelo: '! Atenção', vermelho: '✕ Fora da meta' };
 
 /** Selo do semáforo (cor + ícone + texto). */
-export function selo_semaforo(estado) {
+function selo_semaforo(estado) {
   if (!estado) return '';
   return `<span class="semaforo semaforo-${estado}">${TEXTO_SEMAFORO[estado]}</span>`;
 }
@@ -188,7 +191,7 @@ export function selo_semaforo(estado) {
  * @param {string} [p.detalhe]
  * @param {boolean} [p.principal]
  */
-export function cartao_kpi(p) {
+function cartao_kpi(p) {
   const sem = p.valor === null || p.valor === undefined;
   const partes = [];
   if (p.meta) {
@@ -218,7 +221,7 @@ export function cartao_kpi(p) {
 }
 
 /** Legenda HTML: [{rotulo, cor, linha?}]. */
-export function legenda(itens) {
+function legenda(itens) {
   return `<div class="legenda">${itens.map((i) => `<span><i class="${i.linha ? 'linha' : ''}" style="background:${i.cor}"></i>${html(i.rotulo)}</span>`).join('')}</div>`;
 }
 
@@ -227,9 +230,12 @@ export function legenda(itens) {
  * @param {{titulo: string, num?: boolean, valor: (linha) => string}[]} colunas
  * @param {object[]} linhas
  */
-export function tabela(colunas, linhas, vazio = 'Nenhum registro para os filtros escolhidos.') {
+function tabela(colunas, linhas, vazio = 'Nenhum registro para os filtros escolhidos.') {
   if (!linhas.length) return `<p class="sub">${vazio}</p>`;
   const cab = colunas.map((c) => `<th scope="col"${c.num ? ' class="num"' : ''}>${html(c.titulo)}</th>`).join('');
   const corpo = linhas.map((l) => `<tr>${colunas.map((c) => `<td${c.num ? ' class="num"' : ''}>${c.valor(l)}</td>`).join('')}</tr>`).join('');
   return `<div class="tabela-rolavel"><table><thead><tr>${cab}</tr></thead><tbody>${corpo}</tbody></table></div>`;
 }
+
+Aurora.componentes = { montar_topo, montar_rodape, montar_filtros, texto_periodo, selo_semaforo, cartao_kpi, legenda, tabela };
+})(globalThis.Aurora = globalThis.Aurora || {});

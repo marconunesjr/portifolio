@@ -1,6 +1,9 @@
 /** Mapa do site: os 5 BIs, na ordem de navegação. */
 
-export const PAGINAS = [
+(function (Aurora) {
+'use strict';
+
+const PAGINAS = [
   {
     id: 'bi1', arquivo: 'bi1_indicadores_operacionais.html', titulo: 'Indicadores Operacionais',
     curto: 'Indicadores', pergunta: 'Estamos entregando no prazo e onde está o desvio?',
@@ -27,3 +30,6 @@ export const PAGINAS = [
     kpis: 'K20 a K23 · SLA de coleta, aging, cancelamento, status por unidade',
   },
 ];
+
+Aurora.sitio = { PAGINAS };
+})(globalThis.Aurora = globalThis.Aurora || {});

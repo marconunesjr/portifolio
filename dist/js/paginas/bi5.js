@@ -1,9 +1,13 @@
 // BI 5 — SLA de Coletas: "Estamos coletando dentro do prazo?" (K20 a K23)
-import { cartao_kpi, legenda } from '../componentes.js';
-import * as F from '../formato.js';
-import { barras_horizontais, colunas, cores, linha_diaria } from '../graficos.js';
-import * as K from '../kpis.js';
-import { iniciar_bi } from '../pagina_bi.js';
+
+(function (Aurora) {
+'use strict';
+
+const { cartao_kpi, legenda } = Aurora.componentes;
+const { barras_horizontais, colunas, cores, linha_diaria } = Aurora.graficos;
+const { iniciar_bi } = Aurora.pagina_bi;
+const F = Aurora.formato;
+const K = Aurora.kpis;
 
 const COLETAS = { data: 'solicitacao', unidade: 'unidade_id', cliente: 'cliente_id' };
 const STATUS = ['coletada', 'depositada', 'solicitada', 'cancelada'];
@@ -99,3 +103,4 @@ iniciar_bi({
   aviso: 'O período filtra a data da solicitação. Coleta em aberto com prazo vencido conta como fora do prazo; com prazo futuro fica fora do SLA.',
   desenhar,
 });
+})(globalThis.Aurora = globalThis.Aurora || {});

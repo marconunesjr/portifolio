@@ -9,10 +9,13 @@
  *  - cliente: código do cliente ou "" (todos).
  */
 
-import { dias_corridos, somar_dias } from './calendario.js';
+(function (Aurora) {
+'use strict';
+
+const { dias_corridos, somar_dias } = Aurora.calendario;
 
 /** Conjunto de unidades permitidas pela combinação unidade + UF/regional; null = todas. */
-export function unidades_permitidas(estado, dim_unidades) {
+function unidades_permitidas(estado, dim_unidades) {
   if (!estado.unidade && !estado.local) return null;
   const permitidas = new Set();
   for (const u of dim_unidades) {
@@ -36,7 +39,7 @@ export function unidades_permitidas(estado, dim_unidades) {
  * @param {object[]} dim_unidades dimensão de unidades
  * @param {{inicio: string, fim: string}|null} [periodo] período a aplicar (padrão: o do estado)
  */
-export function filtrar(linhas, estado, colunas, dim_unidades, periodo) {
+function filtrar(linhas, estado, colunas, dim_unidades, periodo) {
   const janela = periodo === undefined ? { inicio: estado.inicio, fim: estado.fim } : periodo;
   const unidades = colunas.unidade ? unidades_permitidas(estado, dim_unidades) : null;
   const cliente = colunas.cliente ? estado.cliente : '';
@@ -54,7 +57,7 @@ export function filtrar(linhas, estado, colunas, dim_unidades, periodo) {
 }
 
 /** Quantidade de dias do período, inclusive. */
-export function dias_do_periodo({ inicio, fim }) {
+function dias_do_periodo({ inicio, fim }) {
   return dias_corridos(inicio, fim) + 1;
 }
 
@@ -62,15 +65,18 @@ export function dias_do_periodo({ inicio, fim }) {
  * Período imediatamente anterior com o mesmo número de dias.
  * Devolve null se ele não couber inteiro nos dados (início antes de data_inicio).
  */
-export function periodo_anterior({ inicio, fim }, data_inicio) {
+function periodo_anterior({ inicio, fim }, data_inicio) {
   const dias = dias_do_periodo({ inicio, fim });
   const anterior = { inicio: somar_dias(inicio, -dias), fim: somar_dias(inicio, -1) };
   return anterior.inicio < data_inicio ? null : anterior;
 }
 
 /** Lista de datas entre inicio e fim, inclusive. */
-export function datas_do_periodo({ inicio, fim }) {
+function datas_do_periodo({ inicio, fim }) {
   const datas = [];
   for (let d = inicio; d <= fim; d = somar_dias(d, 1)) datas.push(d);
   return datas;
 }
+
+Aurora.filtros = { unidades_permitidas, filtrar, dias_do_periodo, periodo_anterior, datas_do_periodo };
+})(globalThis.Aurora = globalThis.Aurora || {});

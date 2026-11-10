@@ -3,6 +3,9 @@
  * A escolha fica no navegador (localStorage) apenas como conveniência.
  */
 
+(function (Aurora) {
+'use strict';
+
 const CHAVE = 'aurora-tema';
 const consulta = () => window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -15,7 +18,7 @@ function gravar_escolha(valor) {
 }
 
 /** Tema em uso agora: "light" ou "dark". */
-export function tema_efetivo() {
+function tema_efetivo() {
   const fixo = document.documentElement.dataset.theme;
   if (fixo === 'light' || fixo === 'dark') return fixo;
   return consulta().matches ? 'dark' : 'light';
@@ -29,7 +32,7 @@ function aplicar() {
  * Liga o botão de tema e avisa quando o tema muda (para redesenhar os gráficos).
  * @param {() => void} [ao_mudar]
  */
-export function iniciar_tema(ao_mudar) {
+function iniciar_tema(ao_mudar) {
   const escolha = ler_escolha();
   if (escolha === 'light' || escolha === 'dark') document.documentElement.dataset.theme = escolha;
   aplicar();
@@ -49,3 +52,6 @@ export function iniciar_tema(ao_mudar) {
     });
   }
 }
+
+Aurora.tema = { tema_efetivo, iniciar_tema };
+})(globalThis.Aurora = globalThis.Aurora || {});

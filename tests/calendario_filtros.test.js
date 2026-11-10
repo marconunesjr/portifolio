@@ -3,9 +3,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-import { criar_calendario, dia_semana, para_minutos, somar_dias } from '../src/js/calendario.js';
-import { decodificar } from '../src/js/dados.js';
-import { datas_do_periodo, dias_do_periodo, filtrar, periodo_anterior, unidades_permitidas } from '../src/js/filtros.js';
+import { Aurora } from './apoio/aurora.mjs';
+
+const { criar_calendario, dia_semana, para_minutos, somar_dias } = Aurora.calendario;
+const { decodificar } = Aurora.dados;
+const { datas_do_periodo, dias_do_periodo, filtrar, periodo_anterior, unidades_permitidas } = Aurora.filtros;
 
 const ler = (caminho) => JSON.parse(readFileSync(new URL(caminho, import.meta.url), 'utf-8'));
 const config = ler('../src/dados/config_site.json');

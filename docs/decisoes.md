@@ -93,6 +93,12 @@
 - **Alternativas:** manter a cópia local e excluir `vendor/` da checagem (descartada pelo autor); alterar o arquivo minificado da biblioteca (frágil).
 - **Consequências:** 0 ocorrências de termos proibidos em todos os arquivos versionados, sem exceção. As páginas de BI e o teste de fumaça precisam de acesso à internet para carregar os gráficos; se o CDN estiver fora do ar, os gráficos não aparecem. A integridade impede que uma versão alterada seja executada.
 
+### ADR-017 — Site abre direto do disco (file://)
+- **Contexto:** abrindo uma página com duplo clique (`file:///...`), o navegador bloqueia módulos JavaScript (`type="module"`) e a leitura de JSON por `fetch`; a página ficava parada em "Carregando dados…". A condição de pronto pede que as páginas abram a partir de `dist/index.html`.
+- **Decisão:** os arquivos de `src/js/` passam a ser scripts clássicos, carregados em ordem com `defer`, que publicam suas funções no objeto global `Aurora` (ex.: `Aurora.kpis.k01_otd`); continua havendo uma única implementação de cada KPI em `kpis.js`. O gerador grava, para cada base, além do `.json`, um `.js` com o mesmo conteúdo que registra os dados em `globalThis.AURORA_DADOS`; `src/js/dados.js` carrega esses arquivos por `<script>`. `dist/` leva só os `.js` de dados. Os testes do Node carregam os mesmos scripts com `tests/apoio/aurora.mjs`.
+- **Alternativas:** exigir um servidor local (era o comportamento anterior); juntar tudo num único arquivo por página com uma etapa de build (contraria o "sem build obrigatório").
+- **Consequências:** o site funciona por duplo clique, por servidor local e no GitHub Pages; o teste de fumaça cobre `file://` em `dist/` e `src/` com limite de 3 s para os KPIs (medido: 1,0 a 1,4 s). `src/dados/` dobra de tamanho no repositório (os `.json` ficam para os testes e para quem quiser usar os dados).
+
 ## Pendências
 | ID | Pendência | Bloqueia a Fase 1? |
 |---|---|---|

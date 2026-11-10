@@ -4,8 +4,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-import { criar_calendario } from '../src/js/calendario.js';
-import * as k from '../src/js/kpis.js';
+import { Aurora } from './apoio/aurora.mjs';
+
+const { criar_calendario } = Aurora.calendario;
+const k = Aurora.kpis;
 
 const ler = (caminho) => JSON.parse(readFileSync(new URL(caminho, import.meta.url), 'utf-8'));
 const config = ler('../src/dados/config_site.json');

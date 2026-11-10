@@ -4,12 +4,15 @@
  * tooltip em todos os gráficos e nunca dois eixos de valor no mesmo gráfico.
  */
 
-import { semaforo } from './kpis.js';
+(function (Aurora) {
+'use strict';
+
+const { semaforo } = Aurora.kpis;
 
 const observados = new WeakSet();
 
 /** Lê os tokens de cor do tema atual. */
-export function cores() {
+function cores() {
   const estilo = getComputedStyle(document.documentElement);
   const v = (nome) => estilo.getPropertyValue(nome).trim();
   return {
@@ -23,13 +26,13 @@ export function cores() {
 }
 
 /** Cor de status para um valor comparado à meta. */
-export function cor_semaforo(valor, meta, c = cores()) {
+function cor_semaforo(valor, meta, c = cores()) {
   const estado = semaforo(valor, meta);
   return estado ? c[estado] : c.neutro;
 }
 
 /** Cria (ou reaproveita) o gráfico no elemento e aplica as opções. */
-export function desenhar(el, opcoes) {
+function desenhar(el, opcoes) {
   if (!el) return null;
   if (typeof echarts === 'undefined') { // CDN indisponível: os KPIs continuam, só o gráfico falta
     el.innerHTML = '<p class="sub">Gráfico indisponível: não foi possível carregar a biblioteca de gráficos (sem acesso à internet?).</p>';
@@ -47,7 +50,7 @@ export function desenhar(el, opcoes) {
 }
 
 /** Opções comuns: texto, grade, tooltip e animação. */
-export function base(c = cores()) {
+function base(c = cores()) {
   return {
     backgroundColor: 'transparent',
     textStyle: { fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', color: c.texto2 },
@@ -92,7 +95,7 @@ function linha_meta(c, valor, rotulo, eixo = 'yAxis') {
  * Evolução diária com linha de meta.
  * @param {{datas: string[], valores: (number|null)[], meta?: object, nome: string, formato: Function, rotulo_meta?: string}} p
  */
-export function linha_diaria(el, p) {
+function linha_diaria(el, p) {
   const c = cores();
   const validos = p.valores.filter((v) => v !== null);
   const minimo = Math.min(...validos, p.meta ? p.meta.meta : Infinity);
@@ -103,7 +106,7 @@ export function linha_diaria(el, p) {
     xAxis: eixo_categoria(c, p.datas.map((d) => `${d.slice(8, 10)}/${d.slice(5, 7)}`), { boundaryGap: false }),
     yAxis: eixo_valor(c, (v) => p.formato(v).replace(',0', ''), {
       min: validos.length ? Math.max(0, Math.floor((minimo - 2) / 5) * 5) : 0,
-      max: p.maximo ? (v) => Math.min(p.maximo, Math.ceil(Math.max(v.max, p.meta ? p.meta.meta : -Infinity) + 2)) : undefined,
+      max: p.maximo ? (v) => Math.min(p.maximo, Math.ceil((Math.max(v.max, p.meta ? p.meta.meta : -Infinity) + 1) / 5) * 5) : undefined,
     }),
     series: [{
       name: p.nome, type: 'line', data: p.valores, connectNulls: false, smooth: false,
@@ -120,7 +123,7 @@ export function linha_diaria(el, p) {
  * Barras horizontais (ranking), com cor de semáforo quando há meta.
  * @param {{categorias: string[], valores: (number|null)[], formato: Function, meta?: object, cor?: string, detalhes?: string[]}} p
  */
-export function barras_horizontais(el, p) {
+function barras_horizontais(el, p) {
   const c = cores();
   const opcoes = {
     ...base(c),
@@ -147,7 +150,7 @@ export function barras_horizontais(el, p) {
  * @param {{categorias: string[], series: {nome: string, valores: number[], cor: string}[], formato: Function,
  *          empilhado?: boolean, rotulos?: (i: number, v: number) => string, horizontal?: boolean}} p
  */
-export function colunas(el, p) {
+function colunas(el, p) {
   const c = cores();
   const horizontal = Boolean(p.horizontal);
   const ultimo = p.series.length - 1;
@@ -184,7 +187,7 @@ export function colunas(el, p) {
  * Mapa de calor hora × dia (sequencial, uma cor do claro ao escuro).
  * @param {{dias: string[], horas: number[], celulas: [number, number, number][], formato: Function}} p
  */
-export function mapa_calor(el, p) {
+function mapa_calor(el, p) {
   const c = cores();
   const maximo = Math.max(1, ...p.celulas.map((x) => x[2]));
   const opcoes = {
@@ -207,3 +210,6 @@ export function mapa_calor(el, p) {
   };
   return desenhar(el, opcoes);
 }
+
+Aurora.graficos = { cores, cor_semaforo, desenhar, base, linha_diaria, barras_horizontais, colunas, mapa_calor };
+})(globalThis.Aurora = globalThis.Aurora || {});

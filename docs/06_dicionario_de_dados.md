@@ -1,6 +1,6 @@
 # 06 — Dicionário de dados
 
-Todas as bases são sintéticas e gravadas em JSON em `src/dados/`. Datas no formato ISO (`aaaa-mm-dd`); data e hora em `aaaa-mm-ddThh:mm`. Bases grandes podem ser gravadas em formato colunar para reduzir o tamanho. PK = chave primária; FK = chave estrangeira.
+Todas as bases são sintéticas e gravadas em JSON em `src/dados/` (cada uma também em `.js` com o mesmo conteúdo, que é o arquivo lido pelo site; ver ADR-017). Datas no formato ISO (`aaaa-mm-dd`); data e hora em `aaaa-mm-ddThh:mm`. Bases grandes podem ser gravadas em formato colunar para reduzir o tamanho. PK = chave primária; FK = chave estrangeira.
 
 ## dim_unidades (uma linha por unidade)
 | Coluna | Tipo | Significado | Valores |

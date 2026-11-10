@@ -157,12 +157,13 @@ button, select, input { font: inherit; color: inherit; }
 /* ------------------------------------------------------------ filtros */
 .filtros {
   position: relative;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px;
   align-items: end;
   background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio);
   padding: 14px; margin-bottom: 18px; box-shadow: var(--sombra);
 }
 .campo { display: grid; gap: 4px; min-width: 0; }
+@media (max-width: 600px) { .filtros { grid-template-columns: 1fr 1fr; } .campo-datas.visivel, .aviso-filtro { grid-column: 1 / -1; } }
 .campo label { font-size: 12px; font-weight: 600; color: var(--texto-mudo); text-transform: uppercase; letter-spacing: 0.04em; }
 .campo select, .campo input {
   width: 100%; min-width: 0; height: 38px; padding: 0 10px; border-radius: 9px;

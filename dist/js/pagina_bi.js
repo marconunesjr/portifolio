@@ -3,12 +3,15 @@
  * e chama a função de desenho da página a cada mudança de filtro ou de tema.
  */
 
-import { criar_calendario } from './calendario.js';
-import { montar_filtros, montar_rodape, montar_topo, texto_periodo } from './componentes.js';
-import { carregar_bases, carregar_config } from './dados.js';
-import { filtrar, periodo_anterior } from './filtros.js';
-import { data, html } from './formato.js';
-import { iniciar_tema } from './tema.js';
+(function (Aurora) {
+'use strict';
+
+const { criar_calendario } = Aurora.calendario;
+const { montar_filtros, montar_rodape, montar_topo, texto_periodo } = Aurora.componentes;
+const { carregar_bases, carregar_config } = Aurora.dados;
+const { filtrar, periodo_anterior } = Aurora.filtros;
+const { data, html } = Aurora.formato;
+const { iniciar_tema } = Aurora.tema;
 
 const PASTA_DADOS = '../dados';
 
@@ -22,7 +25,7 @@ const PASTA_DADOS = '../dados';
  * @param {string} [p.aviso] observação exibida abaixo dos filtros
  * @param {(ctx) => void} p.desenhar desenha KPIs e gráficos para o estado atual
  */
-export async function iniciar_bi({ id, bases, modo = 'historico', dominio, aviso, desenhar }) {
+async function iniciar_bi({ id, bases, modo = 'historico', dominio, aviso, desenhar }) {
   montar_topo(document.getElementById('topo'), { atual: id, prefixo_paginas: '', prefixo_inicio: '../' });
   const area = document.getElementById('area-bi');
   const carregando = document.getElementById('carregando');
@@ -69,8 +72,10 @@ export async function iniciar_bi({ id, bases, modo = 'historico', dominio, aviso
     area.hidden = false;
     redesenhar();
   } catch (erro) {
-    carregando.innerHTML = `<p class="erro">Não foi possível carregar os dados: ${html(erro.message)}. `
-      + 'Abra o site por um servidor HTTP (por exemplo, <code>python scripts/servidor.py</code>).</p>';
+    carregando.innerHTML = `<p class="erro">Não foi possível carregar os dados: ${html(erro.message)}.</p>`;
     throw erro;
   }
 }
+
+Aurora.pagina_bi = { iniciar_bi };
+})(globalThis.Aurora = globalThis.Aurora || {});

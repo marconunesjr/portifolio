@@ -162,3 +162,24 @@ def test_sem_cdn_os_kpis_continuam(navegador: object, url_base: str) -> None:
     assert pagina.locator(".erro").count() == 0
     assert not erros_js, "\n".join(erros_js)
     contexto.close()
+
+
+@pytest.mark.parametrize("pasta", ["dist", "src"])
+@pytest.mark.parametrize("pagina_id", list(PAGINAS))
+def test_abre_direto_do_disco_rapido_e_sem_erros(navegador: object, raiz: Path, pasta: str, pagina_id: str) -> None:
+    """Abrir o arquivo com duplo clique (file://) funciona e mostra os KPIs em até 3 s (RNF02)."""
+    montar_dist.montar()
+    url = (raiz / pasta / PAGINAS[pagina_id]).as_uri()
+    contexto = navegador.new_context(viewport={"width": 1366, "height": 900})
+    pagina = contexto.new_page()
+    monitor = Monitor(pagina)
+    pagina.goto(url)
+    seletor = ".cartao-bi" if pagina_id == "inicio" else ".kpi"
+    pagina.wait_for_selector(seletor, timeout=3000)
+    if pagina_id != "inicio":
+        pagina.wait_for_selector(".grafico svg", timeout=5000)
+        assert pagina.locator("#carregando").count() == 0
+    else:
+        pagina.wait_for_function("document.querySelector('[data-referencia]').textContent === '31/10/2026'")
+    assert not monitor.erros, "\n".join(monitor.erros)
+    contexto.close()

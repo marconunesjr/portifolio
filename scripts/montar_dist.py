@@ -2,8 +2,9 @@
 
 Uso: python scripts/montar_dist.py
 
-Não há build: os arquivos do site são copiados como estão. Arquivos .gitkeep
-ficam de fora e dist/ é recriada do zero a cada execução.
+Não há build: os arquivos do site são copiados como estão. Ficam de fora os
+.gitkeep e os .json de src/dados/ (o site lê os .js equivalentes; os .json servem
+aos testes). dist/ é recriada do zero a cada execução.
 """
 
 from __future__ import annotations
@@ -15,7 +16,15 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 ORIGEM = RAIZ / "src"
 DESTINO = RAIZ / "dist"
-IGNORAR = shutil.ignore_patterns(".gitkeep", "__pycache__", "*.pyc")
+_PADRAO = shutil.ignore_patterns(".gitkeep", "__pycache__", "*.pyc")
+
+
+def IGNORAR(pasta: str, nomes: list[str]) -> set[str]:  # noqa: N802 (usado como constante por copytree)
+    """Ignora arquivos auxiliares e os .json de dados (o site publicado lê só os .js)."""
+    ignorados = set(_PADRAO(pasta, nomes))
+    if Path(pasta).name == "dados":
+        ignorados |= {n for n in nomes if n.endswith(".json")}
+    return ignorados
 
 
 def montar(origem: Path = ORIGEM, destino: Path = DESTINO) -> int:

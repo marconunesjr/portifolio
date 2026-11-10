@@ -1,9 +1,13 @@
 // Página inicial: cartões de acesso aos 5 BIs.
-import { montar_rodape, montar_topo } from '../componentes.js';
-import { carregar_config } from '../dados.js';
-import { data, html } from '../formato.js';
-import { PAGINAS } from '../sitio.js';
-import { iniciar_tema } from '../tema.js';
+
+(function (Aurora) {
+'use strict';
+
+const { montar_rodape, montar_topo } = Aurora.componentes;
+const { carregar_config } = Aurora.dados;
+const { data, html } = Aurora.formato;
+const { PAGINAS } = Aurora.sitio;
+const { iniciar_tema } = Aurora.tema;
 
 montar_topo(document.getElementById('topo'), { atual: 'inicio', prefixo_paginas: 'paginas/', prefixo_inicio: '' });
 iniciar_tema();
@@ -17,7 +21,9 @@ document.getElementById('cartoes').innerHTML = PAGINAS.map((p, i) => `
     <span class="abrir">Abrir BI →</span>
   </a>`).join('');
 
-const config = await carregar_config('dados');
-for (const el of document.querySelectorAll('[data-referencia]')) el.textContent = data(config.data_referencia);
-for (const el of document.querySelectorAll('[data-inicio]')) el.textContent = data(config.data_inicio);
-montar_rodape(document.getElementById('rodape'), config.empresa.aviso);
+carregar_config('dados').then((config) => {
+  for (const el of document.querySelectorAll('[data-referencia]')) el.textContent = data(config.data_referencia);
+  for (const el of document.querySelectorAll('[data-inicio]')) el.textContent = data(config.data_inicio);
+  montar_rodape(document.getElementById('rodape'), config.empresa.aviso);
+});
+})(globalThis.Aurora = globalThis.Aurora || {});

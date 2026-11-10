@@ -1,9 +1,13 @@
 // BI 4 — Transporte e Transferências: "As viagens saem e chegam no horário?" (K15 a K19)
-import { cartao_kpi, legenda, tabela } from '../componentes.js';
-import * as F from '../formato.js';
-import { barras_horizontais, cores, linha_diaria, colunas } from '../graficos.js';
-import * as K from '../kpis.js';
-import { iniciar_bi } from '../pagina_bi.js';
+
+(function (Aurora) {
+'use strict';
+
+const { cartao_kpi, legenda, tabela } = Aurora.componentes;
+const { barras_horizontais, cores, linha_diaria, colunas } = Aurora.graficos;
+const { iniciar_bi } = Aurora.pagina_bi;
+const F = Aurora.formato;
+const K = Aurora.kpis;
 
 // Período pela data da saída prevista (K19: data da transferência); unidade de origem;
 // cliente principal nas viagens e cliente do manifesto.
@@ -121,3 +125,4 @@ iniciar_bi({
   aviso: 'Unidade = unidade de origem. Cliente = cliente principal da viagem e cliente do manifesto. Viagens canceladas ficam fora de todos os KPIs.',
   desenhar,
 });
+})(globalThis.Aurora = globalThis.Aurora || {});

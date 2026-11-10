@@ -2,7 +2,7 @@
 
 ## Camadas
 1. **Gerador** (`etl/`): script Python que lê `config/config.yaml`, gera as bases sintéticas, valida contra o dicionário e grava JSON.
-2. **Dados** (`src/dados/`): um JSON por base. Somente leitura para o site.
+2. **Dados** (`src/dados/`): um JSON por base e, com o mesmo conteúdo, um `.js` que o site carrega (ADR-017). Somente leitura para o site.
 3. **Site** (`src/`): páginas HTML, CSS e JavaScript. `src/js/kpis.js` concentra o cálculo dos 23 KPIs; `src/js/calendario.js` concentra dias úteis e feriados.
 4. **Publicação** (`dist/`): cópia de `src/` pronta para o GitHub Pages, gerada por um script simples de cópia.
 

@@ -1,9 +1,13 @@
 // BI 1 — Indicadores Operacionais: "Estamos entregando no prazo e onde está o desvio?" (K01 a K06)
-import { cartao_kpi, legenda, tabela } from '../componentes.js';
-import * as F from '../formato.js';
-import { barras_horizontais, colunas, cores, linha_diaria } from '../graficos.js';
-import * as K from '../kpis.js';
-import { iniciar_bi } from '../pagina_bi.js';
+
+(function (Aurora) {
+'use strict';
+
+const { cartao_kpi, legenda, tabela } = Aurora.componentes;
+const { barras_horizontais, colunas, cores, linha_diaria } = Aurora.graficos;
+const { iniciar_bi } = Aurora.pagina_bi;
+const F = Aurora.formato;
+const K = Aurora.kpis;
 
 // Colunas usadas pelos filtros em cada base (período, unidade, cliente).
 const CTES = { data: 'limite_cliente', unidade: 'unidade_destino_id', cliente: 'cliente_id' };
@@ -122,3 +126,4 @@ iniciar_bi({
     + 'O filtro de cliente não altera K06, porque a base de entregas por courier não tem cliente.',
   desenhar,
 });
+})(globalThis.Aurora = globalThis.Aurora || {});

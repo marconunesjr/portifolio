@@ -14,9 +14,10 @@ Fase 1: site completo, ainda não publicado (ver pendências P02 e P04 em `docs/
 - Identidade visual própria com temas claro e escuro, layout de 360 px a 1920 px.
 - Testes: um por KPI com casos de borda (`node --test tests/`); calendário, qualidade dos dados, reprodutibilidade, consistência Python × JavaScript, anonimização e fumaça das 6 páginas com Playwright servindo `dist/` na subpasta `/portifolio/` (`python -m pytest`).
 - `scripts/montar_dist.py` (cópia de `src/` para `dist/`), `scripts/servidor.py` (servidor local com tipos MIME corretos) e workflow `.github/workflows/pages.yml` para o GitHub Pages.
-- Decisões ADR-009 a ADR-016 e pendências P04 e P05 (resolvida) em `docs/decisoes.md`.
+- Decisões ADR-009 a ADR-017 e pendências P04 e P05 (resolvida) em `docs/decisoes.md`.
 
 ### Corrigido
+- As páginas abrem direto do disco (duplo clique em `dist/index.html`), sem servidor: scripts clássicos no lugar de módulos e dados também em `.js` (ADR-017). Filtros sem texto cortado nos campos.
 - Botão de tema funciona antes de os dados carregarem; sem o CDN do ECharts, os KPIs continuam e os gráficos mostram um aviso; selo de semáforo sem anúncio repetido em leitor de tela.
 
 ### Alterado

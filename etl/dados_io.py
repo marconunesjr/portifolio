@@ -1,6 +1,6 @@
 """Gravação e leitura das bases em JSON colunar.
 
-Formato (lido também por src/js/dados.js):
+Formato (o mesmo objeto vai para <base>.json e para <base>.js, lido por src/js/dados.js):
     {"base": nome, "linhas": n,
      "colunas": [{"nome": ..., "tipo": ...}, ...],
      "dados": {coluna: [valores] | {"dominio": [...], "indices": [...]}}}
@@ -67,6 +67,17 @@ def serializar(objeto: dict[str, Any]) -> bytes:
     """Serializa de forma determinística (mesma entrada, mesmos bytes)."""
     texto = json.dumps(objeto, ensure_ascii=False, separators=(",", ":"), sort_keys=False)
     return (texto + "\n").encode("utf-8")
+
+
+def serializar_script(nome: str, objeto: dict[str, Any]) -> bytes:
+    """Mesmo conteúdo do JSON, como script que registra a base em globalThis.AURORA_DADOS.
+
+    É o arquivo que o site carrega: um <script> funciona também em file://, onde o
+    navegador bloqueia fetch de JSON.
+    """
+    texto = json.dumps(objeto, ensure_ascii=False, separators=(",", ":"))
+    return (f"(globalThis.AURORA_DADOS = globalThis.AURORA_DADOS || {{}})[{json.dumps(nome)}] = "
+            f"{texto};\n").encode()
 
 
 def decodificar(objeto: dict[str, Any]) -> pd.DataFrame:

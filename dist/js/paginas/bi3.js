@@ -1,9 +1,13 @@
 // BI 3 — Produção do Dia: "A unidade está produzindo o previsto, hora a hora?" (K12 a K14)
-import { cartao_kpi, legenda, tabela } from '../componentes.js';
-import * as F from '../formato.js';
-import { barras_horizontais, colunas, cores, linha_diaria, mapa_calor } from '../graficos.js';
-import * as K from '../kpis.js';
-import { iniciar_bi } from '../pagina_bi.js';
+
+(function (Aurora) {
+'use strict';
+
+const { cartao_kpi, legenda, tabela } = Aurora.componentes;
+const { barras_horizontais, colunas, cores, linha_diaria, mapa_calor } = Aurora.graficos;
+const { iniciar_bi } = Aurora.pagina_bi;
+const F = Aurora.formato;
+const K = Aurora.kpis;
 
 const PRODUCAO = { data: 'data', unidade: 'unidade_id', cliente: 'cliente_id' };
 const FORECAST = { data: 'data', unidade: 'unidade_id', cliente: 'cliente_id' };
@@ -120,3 +124,4 @@ iniciar_bi({
   aviso: 'O filtro de cliente não altera a produtividade por operador (K14), porque essa base não tem cliente (ADR-006).',
   desenhar,
 });
+})(globalThis.Aurora = globalThis.Aurora || {});
