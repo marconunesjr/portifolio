@@ -103,7 +103,7 @@
 - **Contexto:** o autor pediu um BI de contencioso (*litigation*) e aprovou em 09/11/2026 a proposta de KPIs K24 a K30, com meta de 97% para a taxa de êxito (K26).
 - **Decisão:** escopo só de processos ligados à operação (avaria, extravio, atraso), sem o trabalhista, para que o BI se ligue aos outros: as unidades e os clientes ofensores de OTD abrem mais processos e perdem mais (`cenario.contencioso` em `config.yaml`). Os processos começam até 365 dias antes do histórico, para formar estoque. A provisão (K28) é uma foto na data de referência, pois a base não guarda histórico de provisão. A base é gerada por último, para que a mesma semente mantenha idênticas as bases dos BIs 1 a 5.
 - **Alternativas:** incluir o trabalhista (não se liga à operação dos outros BIs); guardar provisão por mês (mais volume sem ganho para o portfólio).
-- **Consequências:** 7 páginas e 30 KPIs; o K24 fica sem meta até o autor definir uma (pendência P06).
+- **Consequências:** 7 páginas e 30 KPIs; o K24 recebeu do autor a meta de 75% do nível atual: ≤ 13,0 processos por 10 mil remessas, tolerância amarela de 2,0 (P06 resolvida).
 
 ## Pendências
 | ID | Pendência | Bloqueia a Fase 1? |
@@ -113,7 +113,7 @@
 | P03 | Revisão do autor das regras de borda do ADR-007 e das decisões do ADR-006, ADR-011 e ADR-012 | Não |
 | P04 | Conferir manualmente que os nomes fictícios de clientes de `config/config.yaml` não coincidem com marcas conhecidas (docs/08). Busca na web feita em 09/11/2026 (resultado abaixo). Por decisão do autor, CL04 e CL06 foram renomeados; resta a conferência final do autor antes de publicar | Não bloqueia o código; bloqueia a publicação |
 | P05 | ~~Falso positivo de anonimização no ECharts local~~ — resolvida em 09/11/2026: ECharts por CDN (ADR-016) | Não |
-| P06 | Definir a meta da litigiosidade (K24), em processos por 10 mil remessas; hoje a média da rede é de cerca de 17 | Não |
+| P06 | ~~Meta da litigiosidade (K24)~~ — resolvida em 09/11/2026: ≤ 13,0 processos por 10 mil remessas, 75% do nível de 17,4 (decisão do autor) | Não |
 
 ### Resultado da busca da P04 (09/11/2026)
 Busca na web por cada nome entre aspas. Nenhum dos 15 nomes aparece como empresa com o nome exato. As marcas reais semelhantes não são citadas aqui, para não entrarem no repositório.

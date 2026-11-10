@@ -73,6 +73,7 @@ metas:
   K16_sla_expedicao:       {meta: 95.0, sentido: maior, tolerancia_amarelo: 3.0}
   K19_pct_transferido:     {meta: 98.0, sentido: maior, tolerancia_amarelo: 1.0}
   K20_sla_coleta:          {meta: 90.0, sentido: maior, tolerancia_amarelo: 4.0}
+  K24_litigiosidade:       {meta: 13.0, sentido: menor, tolerancia_amarelo: 2.0}   # processos por 10 mil remessas (75% do nível de 09/11/2026)
   K26_taxa_exito:          {meta: 97.0, sentido: maior, tolerancia_amarelo: 3.0}
 
 faixas:

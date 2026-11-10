@@ -89,6 +89,8 @@ def test_pagina_abre_sem_erros_e_sem_rolagem_horizontal(navegador: object, url_b
         assert pagina.locator(".pergunta").inner_text().endswith("?")
         assert pagina.locator("details.nota").count() == 1
         assert pagina.locator(f'[data-kpi="{PRINCIPAL[pagina_id]}"] .semaforo').count() == 1
+        if pagina_id == "bi6":  # K24 também tem meta (≤ 13,0 por 10 mil remessas)
+            assert pagina.locator('[data-kpi="K24"] .semaforo').count() == 1
     assert not monitor.erros, "\n".join(monitor.erros)
     pagina.context.close()
 

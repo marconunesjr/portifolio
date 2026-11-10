@@ -119,7 +119,7 @@ Regra do K20: coleta em aberto com prazo até a data de referência conta como f
 ### BI 6 — Contencioso e Indenizações (base bi6_processos; aprovado pelo autor em 09/11/2026)
 | ID | KPI | Fórmula | Unidade | Meta | Comparação |
 |---|---|---|---|---|---|
-| K24 | Litigiosidade | Processos com data_abertura no período ÷ soma de remessas emitidas no período (bi1_emissoes_dia) × 10.000 | processos por 10 mil remessas | sem meta (pendência P06) | período anterior |
+| K24 | Litigiosidade | Processos com data_abertura no período ÷ soma de remessas emitidas no período (bi1_emissoes_dia) × 10.000 | processos por 10 mil remessas | ≤ 13,0 (75% do nível de 09/11/2026) | meta e período anterior |
 | K25 | Estoque de processos | Processos com data_abertura até o último dia do período e sem data_encerramento até ele, por idade (0–90, 91–180, 181–365, 366+ dias corridos) e por tipo | processos | sem meta | estoque no fim do período anterior |
 | K26 | Taxa de êxito | Processos ganhos ÷ processos ganhos ou perdidos, entre os com data_encerramento no período (acordos ficam fora) | % | ≥ 97% | meta e período anterior |
 | K27 | Valor pago | Soma de valor_pago dos encerrados no período, e em % do valor_pedido deles | R$ | sem meta | período anterior |

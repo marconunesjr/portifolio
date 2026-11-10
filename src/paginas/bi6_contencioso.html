@@ -62,6 +62,7 @@
           <h2>Litigiosidade por unidade (K24)</h2>
           <p class="sub" id="t-litig"></p>
           <div class="grafico alto" id="g-litig-unidade" role="img" aria-label="Processos novos por 10 mil remessas, por unidade"></div>
+          <div id="l-litig-unidade"></div>
         </article>
         <article class="painel terco">
           <h2>Estoque por idade (K25)</h2>
@@ -80,7 +81,7 @@
       <summary>Nota metodológica e fórmulas</summary>
       <dl>
         <dt>K24 — Litigiosidade</dt>
-        <dd>Processos com <code>data_abertura</code> no período ÷ soma de <code>remessas</code> emitidas no período (base de emissões do BI 1) × 10.000. Sem meta definida (pendência P06).</dd>
+        <dd>Processos com <code>data_abertura</code> no período ÷ soma de <code>remessas</code> emitidas no período (base de emissões do BI 1) × 10.000. Meta ≤ 13,0 (75% do nível de 17,4 medido em 09/11/2026); amarelo até 2,0 acima; vermelho além disso.</dd>
         <dt>K25 — Estoque de processos</dt>
         <dd>Processos abertos até o último dia do período e não encerrados até ele, por idade em dias corridos (0–90, 91–180, 181–365, 366+) e por tipo. Um processo encerrado no próprio dia de corte já não conta.</dd>
         <dt>K26 — Taxa de êxito (meta ≥ 97%)</dt>

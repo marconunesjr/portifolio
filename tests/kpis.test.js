@@ -238,6 +238,10 @@ test('BI 6: o período seleciona novos pela abertura e encerrados pelo encerrame
 test('K24 Litigiosidade: processos novos por 10 mil remessas; sem remessas → sem dados', () => {
   assert.deepEqual(k.k24_litigiosidade(novos6, bi6.emissoes), bi6.esperado.k24);
   assert.equal(k.k24_litigiosidade(novos6, []).valor, null);
+  // semáforo de sentido "menor": meta 13,0 com tolerância 2,0 (config.yaml)
+  assert.equal(k.semaforo(13, config.metas.K24_litigiosidade), 'verde');
+  assert.equal(k.semaforo(15, config.metas.K24_litigiosidade), 'amarelo');
+  assert.equal(k.semaforo(17.4, config.metas.K24_litigiosidade), 'vermelho');
 });
 
 test('K25 Estoque: em andamento na data de corte; encerrado no próprio dia de corte sai do estoque', () => {

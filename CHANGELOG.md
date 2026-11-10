@@ -7,7 +7,7 @@ Formato baseado em versionamento semântico.
 - BI 6 Contencioso e Indenizações (`paginas/bi6_contencioso.html`): litigiosidade, estoque de processos, taxa de êxito (meta 97%), valor pago, provisão de risco provável, tempo até o encerramento e acordos (K24 a K30), com os 4 filtros.
 - Base sintética `bi6_processos` (4.000 processos) e checagens L15, L16, P07 e P08 de docs/08.
 - Testes de K24 a K30 com casos de borda e o BI 6 no teste de fumaça.
-- ADR-018 e pendência P06 (meta do K24) em `docs/decisoes.md`.
+- ADR-018 em `docs/decisoes.md`. Meta do K24: ≤ 13,0 processos por 10 mil remessas (75% do nível atual, decisão do autor).
 
 ### Alterado
 - Site com 7 páginas e 30 KPIs; navegação, página inicial, README, CLAUDE.md e docs 01, 02, 03, 05, 06, 07 e 08 atualizados.

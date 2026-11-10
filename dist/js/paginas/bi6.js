@@ -51,8 +51,8 @@ function desenhar(ctx) {
       detalhe: `${F.inteiro(k26.numerador)} ganhos em ${F.inteiro(k26.denominador)} processos decididos no período (acordos à parte)`,
     }),
     cartao_kpi({
-      codigo: 'K24', titulo: 'Litigiosidade (por 10 mil remessas)', valor: k24.valor, formato: (v) => F.numero(v, 1), sentido: 'menor',
-      sufixo_variacao: '', anterior: de_ant((a) => K.k24_litigiosidade(a.novos, a.emissoes).valor),
+      codigo: 'K24', titulo: 'Litigiosidade (por 10 mil remessas)', valor: k24.valor, formato: (v) => F.numero(v, 1),
+      meta: metas.K24_litigiosidade, sufixo_variacao: '', anterior: de_ant((a) => K.k24_litigiosidade(a.novos, a.emissoes).valor),
       detalhe: `${F.inteiro(k24.numerador)} processos novos para ${F.inteiro(k24.denominador)} remessas emitidas`,
     }),
     cartao_kpi({
@@ -121,12 +121,16 @@ function desenhar(ctx) {
   const emissoes_unidade = K.agrupar(emissoes, 'unidade_origem_id');
   const litig = K.por_grupo(novos, 'unidade_id', (g) => K.k24_litigiosidade(g, emissoes_unidade.get(g[0].unidade_id) || []))
     .filter((g) => g.valor !== null).sort((a, b) => b.valor - a.valor);
-  colunas(document.getElementById('g-litig-unidade'), {
+  barras_horizontais(document.getElementById('g-litig-unidade'), {
     categorias: litig.map((g) => `${g.chave} · ${nome_curto(ctx.nome_unidade.get(g.chave))}`),
-    series: [{ nome: 'Processos por 10 mil remessas', valores: litig.map((g) => g.valor), cor: c.series[0] }],
-    formato: (v) => F.numero(v, 1), horizontal: true, rotulos: (_, v) => F.numero(v, 1),
+    valores: litig.map((g) => g.valor), formato: (v) => F.numero(v, 1), meta: metas.K24_litigiosidade,
+    detalhes: litig.map((g) => `${F.inteiro(g.numerador)} processos para ${F.inteiro(g.denominador)} remessas`),
   });
-  document.getElementById('t-litig').textContent = `Média do recorte: ${por_10mil(k24.valor)}`;
+  document.getElementById('t-litig').textContent = `Pior unidade primeiro. Média do recorte: ${por_10mil(k24.valor)}; meta ≤ ${F.numero(metas.K24_litigiosidade.meta, 1)}.`;
+  document.getElementById('l-litig-unidade').innerHTML = legenda([
+    { rotulo: 'Na meta', cor: c.verde }, { rotulo: 'Até 2,0 acima', cor: c.amarelo },
+    { rotulo: 'Fora da meta', cor: c.vermelho }, { rotulo: 'Meta', cor: c.texto2, linha: true },
+  ]);
 
   // Estoque por idade (K25).
   colunas(document.getElementById('g-estoque'), {
