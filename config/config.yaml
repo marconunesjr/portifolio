@@ -24,7 +24,7 @@ calendario:
     - "2026-11-02"
 
 regionais:
-  Sao Paulo: [SPO, CPQ]
+  São Paulo: [SPO, CPQ]
   Sudeste: [RJO, BHZ]
   Sul: [CWB, POA, FLN]
   Nordeste: [SSA, REC, FOR]
@@ -77,6 +77,44 @@ faixas:
   aging_piso_dias: ["0-1", "2-3", "4-7", "8+"]
   aging_atraso_dias_uteis: ["1", "2-3", "4-5", "6+"]
   peso_kg: ["0-1", "1-5", "5-30", "30+"]
+
+# Segmento de cada cliente (dim_clientes.segmento).
+segmentos_clientes:
+  Casa Prisma: casa
+  Mercado Jaspe: outros
+  Loja Tucano: moda
+  Eletro Âmbar: eletrônicos
+  Botica Serena: saúde e beleza
+  Moda Girassol: moda
+  Livraria Farol: outros
+  Pet Baobá: outros
+  Esporte Quartzo: moda
+  Tech Colibri: eletrônicos
+  Lar Marfim: casa
+  Bazar Sabiá: casa
+  Ótica Lume: saúde e beleza
+  Brinquedos Pipa: outros
+  Empório Cedro: outros
+
+# Cenário dos dados sintéticos: ofensores que fazem as análises contarem uma história (docs/03).
+cenario:
+  clientes_por_unidade: 8               # clientes atendidos por unidade na produção e no forecast
+  unidades_ofensoras_otd: [SSA, REC]    # destino com OTD bem abaixo da meta
+  clientes_ofensores_otd: [CL04, CL06]  # Eletro Âmbar e Moda Girassol
+  unidade_ofensora_piso: RJO            # mais piso vencido
+  unidade_ofensora_entrada: BHZ         # mais CT-es transferidos sem entrada
+  unidade_ofensora_forecast: POA        # produção abaixo do previsto
+  unidade_ofensora_transferencia: CWB   # manifestos incompletos
+  fornecedor_ofensor: FN05              # atraso recorrente no trânsito
+  regional_ofensora_coleta: Nordeste    # coleta fora do prazo
+  # Porte relativo de cada unidade (multiplica volumes e sorteios).
+  porte_unidades: {SPO: 1.8, CPQ: 1.0, RJO: 1.4, BHZ: 1.1, CWB: 0.9, POA: 0.8, FLN: 0.6,
+                   SSA: 0.8, REC: 0.8, FOR: 0.6, BSB: 0.7, GYN: 0.6}
+  # Fator de volume por dia da semana (segunda a domingo) e em feriado.
+  fator_dia_semana: [1.05, 1.0, 1.0, 1.0, 0.95, 0.45, 0.2]
+  fator_feriado: 0.3
+  volume_producao_dia: 9000             # volumes recebidos por dia útil na rede, aproximado
+  volume_emissoes_dia: 6000             # remessas emitidas por dia útil na rede, aproximado
 
 qualidade:
   lead_time_max_dias_uteis: 30

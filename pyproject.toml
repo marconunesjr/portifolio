@@ -1,0 +1,20 @@
+[project]
+name = "portfolio-bis-logistica"
+version = "0.1.0"
+description = "Portfólio de BIs de logística da empresa fictícia Aurora Log"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+extend-exclude = [".venv", "dist", "_prompts", "referencias"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["bases", "calendario", "configuracao", "dados_io", "dicionario", "qualidade", "montar_dist"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["etl", "scripts"]
