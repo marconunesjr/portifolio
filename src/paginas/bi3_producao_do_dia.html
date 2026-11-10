@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produção do Dia · Aurora Log</title>
+  <meta name="description" content="BI de produção da Aurora Log (empresa fictícia): aderência ao forecast, volumes IN e OUT por hora e produtividade por operador. Dados fictícios.">
+  <link rel="icon" href="../assets/icone.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/estilo.css">
+  <script>try { var t = localStorage.getItem('aurora-tema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script src="../assets/vendor/echarts.min.js" defer></script>
+  <script type="module" src="../js/paginas/bi3.js"></script>
+</head>
+<body>
+  <header class="topo" id="topo"></header>
+  <main class="conteudo">
+    <section class="intro-bi">
+      <span class="kicker">BI 3 de 5 · Produção</span>
+      <h1>Produção do Dia</h1>
+      <p class="pergunta">A unidade está produzindo o previsto, hora a hora?</p>
+      <div class="metadados">
+        <span class="etiqueta">Data de referência: <strong data-referencia>31/10/2026</strong></span>
+        <span class="etiqueta etiqueta-aviso">Dados fictícios</span>
+        <span>K12 a K14 · produção lida por hora cheia, das 6h às 21h</span>
+      </div>
+    </section>
+
+    <form class="filtros" id="filtros" aria-label="Filtros" onsubmit="return false"></form>
+    <p id="carregando" class="carregando">Carregando dados…</p>
+
+    <div id="area-bi" hidden>
+      <section class="kpis" id="kpis" aria-label="Indicadores principais"></section>
+      <section class="paineis">
+        <article class="painel dois-tercos">
+          <h2>Aderência ao forecast por dia (K12)</h2>
+          <p class="sub">Volumes recebidos ÷ volumes previstos; acima de 100% é produção acima do previsto.</p>
+          <div class="grafico" id="g-aderencia-diaria" role="img" aria-label="Aderência diária ao forecast com a meta"></div>
+        </article>
+        <article class="painel terco">
+          <h2>IN e OUT por hora (K13)</h2>
+          <p class="sub">Média de volumes por dia em cada hora cheia.</p>
+          <div class="grafico" id="g-in-out" role="img" aria-label="Volumes recebidos e expedidos por hora"></div>
+          <div id="l-in-out"></div>
+        </article>
+        <article class="painel">
+          <h2>Mapa de calor: volumes recebidos por hora × dia (K13)</h2>
+          <p class="sub">Cada célula soma os volumes IN de uma hora de um dia; cor mais intensa, mais volume (escala abaixo do gráfico). Picos no início da manhã e no fim da tarde.</p>
+          <div class="grafico alto" id="g-mapa" role="img" aria-label="Mapa de calor de volumes recebidos por hora e por dia"></div>
+        </article>
+        <article class="painel meio">
+          <h2>Aderência ao forecast por unidade</h2>
+          <p class="sub">Pior unidade primeiro.</p>
+          <div class="grafico alto" id="g-aderencia-unidade" role="img" aria-label="Aderência ao forecast por unidade"></div>
+          <div id="l-aderencia-unidade"></div>
+        </article>
+        <article class="painel meio">
+          <h2>Produtividade por operador (K14)</h2>
+          <p class="sub">Operadores mais abaixo da média da própria unidade (volumes por hora trabalhada).</p>
+          <div id="t-operadores"></div>
+        </article>
+      </section>
+    </div>
+
+    <details class="nota">
+      <summary>Nota metodológica e fórmulas</summary>
+      <dl>
+        <dt>K12 — Aderência ao forecast (meta ≥ 95%)</dt>
+        <dd>Soma de <code>volumes_in</code> ÷ soma de <code>volumes_previstos</code>. Valores acima de 100% são válidos e aparecem em verde.</dd>
+        <dt>K13 — Volumes IN e OUT por hora</dt>
+        <dd>Soma de <code>volumes_in</code> e de <code>volumes_out</code> por hora e por dia (mapa de calor hora × dia); a referência é a média do período.</dd>
+        <dt>K14 — Produtividade por operador</dt>
+        <dd>Soma de <code>volumes</code> ÷ soma de <code>horas_trabalhadas</code>, por operador; comparação com a média da unidade.</dd>
+      </dl>
+      <p>O período filtra a data. Não há turnos nem cut-off: a produção é lida por hora cheia, das 6h às 21h. A base de produtividade não tem cliente, então o filtro de cliente não altera o K14 (ADR-006). Semáforo do K12: verde a partir de 95%; amarelo até 5 p.p. abaixo; vermelho além disso.</p>
+    </details>
+  </main>
+  <footer class="rodape" id="rodape"></footer>
+</body>
+</html>

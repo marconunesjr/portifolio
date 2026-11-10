@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Indicadores Operacionais · Aurora Log</title>
+  <meta name="description" content="BI de nível de serviço da Aurora Log (empresa fictícia): OTD, lead time, aging de atraso, ofensor de pickup, emissões e baixas via app. Dados fictícios.">
+  <link rel="icon" href="../assets/icone.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/estilo.css">
+  <script>try { var t = localStorage.getItem('aurora-tema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script src="../assets/vendor/echarts.min.js" defer></script>
+  <script type="module" src="../js/paginas/bi1.js"></script>
+</head>
+<body>
+  <header class="topo" id="topo"></header>
+  <main class="conteudo">
+    <section class="intro-bi">
+      <span class="kicker">BI 1 de 5 · Nível de serviço</span>
+      <h1>Indicadores Operacionais</h1>
+      <p class="pergunta">Estamos entregando no prazo e onde está o desvio?</p>
+      <div class="metadados">
+        <span class="etiqueta">Data de referência: <strong data-referencia>31/10/2026</strong></span>
+        <span class="etiqueta etiqueta-aviso">Dados fictícios</span>
+        <span>K01 a K06 · período filtra o vencimento do CT-e (limite do cliente)</span>
+      </div>
+    </section>
+
+    <form class="filtros" id="filtros" aria-label="Filtros" onsubmit="return false"></form>
+    <p id="carregando" class="carregando">Carregando dados…</p>
+
+    <div id="area-bi" hidden>
+      <section class="kpis" id="kpis" aria-label="Indicadores principais"></section>
+      <section class="paineis">
+        <article class="painel dois-tercos">
+          <h2>OTD por dia de vencimento</h2>
+          <p class="sub">% de CT-es entregues até o limite do cliente, em cada dia; a linha tracejada é a meta.</p>
+          <div class="grafico" id="g-otd-diario" role="img" aria-label="OTD diário com a meta"></div>
+        </article>
+        <article class="painel terco">
+          <h2>Aging de atraso (K03)</h2>
+          <p class="sub" id="t-aging"></p>
+          <div class="grafico" id="g-aging" role="img" aria-label="CT-es fora do prazo por faixa de dias úteis de atraso"></div>
+        </article>
+        <article class="painel meio">
+          <h2>Onde está o desvio: OTD por unidade de destino</h2>
+          <p class="sub">Pior unidade primeiro. A cor indica a distância para a meta.</p>
+          <div class="grafico alto" id="g-otd-unidade" role="img" aria-label="OTD por unidade de destino"></div>
+          <div id="l-otd-unidade"></div>
+        </article>
+        <article class="painel meio">
+          <h2>OTD por cliente</h2>
+          <p class="sub">Pior cliente primeiro.</p>
+          <div class="grafico alto" id="g-otd-cliente" role="img" aria-label="OTD por cliente"></div>
+          <div id="l-otd-cliente"></div>
+        </article>
+        <article class="painel dois-tercos">
+          <h2>Emissões por dia (K05)</h2>
+          <p class="sub">Remessas emitidas pela unidade de origem; menos volume no fim de semana.</p>
+          <div class="grafico baixo" id="g-emissoes" role="img" aria-label="Remessas emitidas por dia"></div>
+        </article>
+        <article class="painel terco">
+          <h2>Baixas via app (K06): menores</h2>
+          <p class="sub">Couriers com menor % de entregas baixadas pelo aplicativo.</p>
+          <div id="t-couriers"></div>
+        </article>
+      </section>
+    </div>
+
+    <details class="nota">
+      <summary>Nota metodológica e fórmulas</summary>
+      <dl>
+        <dt>K01 — OTD (meta ≥ 95%)</dt>
+        <dd>CT-es com <code>realizado</code> preenchido e até <code>limite_cliente</code> ÷ CT-es com <code>limite_cliente</code> no período. CT-e em aberto com limite até a data de referência e CT-e devolvido contam como fora do prazo; em aberto com limite depois da referência ainda não venceu e fica fora do denominador.</dd>
+        <dt>K02 — Lead time</dt>
+        <dd>Média dos dias úteis entre <code>emissao</code> e <code>realizado</code>, só CT-es realizados.</dd>
+        <dt>K03 — Aging de atraso</dt>
+        <dd>Para os CT-es fora do prazo (complemento do numerador do K01): dias úteis entre <code>limite_cliente</code> e <code>realizado</code>, ou a data de referência se não realizado; contagem por faixa (1, 2–3, 4–5, 6+). Atraso de 0 dia útil (ex.: vencido na sexta e em aberto no sábado de referência) entra na primeira faixa.</dd>
+        <dt>K04 — % ofensor de pickup</dt>
+        <dd>CT-es com <code>ofensor_pickup</code> verdadeiro ÷ CT-es com <code>limite_cliente</code> no período.</dd>
+        <dt>K05 — Emissões</dt>
+        <dd>Soma de remessas, volumes e peso (kg) da base de emissões; o período filtra a data de emissão.</dd>
+        <dt>K06 — % baixas via app</dt>
+        <dd>Soma de <code>baixas_app</code> ÷ soma de <code>entregas</code>, total e por courier; o período filtra a data.</dd>
+      </dl>
+      <p>Dia útil: segunda a sexta, exceto feriado nacional. Dias úteis entre duas datas contam os dias úteis depois da data inicial até a final, inclusive. Comparação: mesmo número de dias imediatamente anterior ao período filtrado. Semáforo: verde atinge a meta; amarelo fica até 3 p.p. abaixo; vermelho além disso. Denominador zero aparece como "sem dados".</p>
+    </details>
+  </main>
+  <footer class="rodape" id="rodape"></footer>
+</body>
+</html>

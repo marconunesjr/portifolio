@@ -38,7 +38,7 @@ class Contexto:
         self.linhas = geracao["linhas"]
         self.inicio = np.datetime64(geracao["data_inicio"], "D")
         self.referencia = np.datetime64(geracao["data_referencia"], "D")
-        self.dias = np.arange(self.inicio, self.referencia + 1, dtype="datetime64[D]")
+        self.dias = np.arange(self.inicio, self.referencia + np.timedelta64(1, "D"), dtype="datetime64[D]")
         self.cenario = config["cenario"]
         self.unidades = np.array(list(config["unidades"].keys()))
         self.regional = regional_por_unidade(config)
@@ -100,7 +100,7 @@ def gerar_dim_clientes(ctx: Contexto) -> pd.DataFrame:
 
 def gerar_dim_calendario(ctx: Contexto) -> pd.DataFrame:
     """Um dia por linha: os 90 dias e os 2 seguintes à data de referência."""
-    datas = np.arange(ctx.inicio, ctx.referencia + 3, dtype="datetime64[D]")
+    datas = np.arange(ctx.inicio, ctx.referencia + np.timedelta64(3, "D"), dtype="datetime64[D]")
     return pd.DataFrame({
         "data": datas,
         "dia_semana": ctx.cal.dia_semana(datas),
@@ -130,7 +130,7 @@ def gerar_bi1_ctes(ctx: Contexto) -> pd.DataFrame:
     )
     penal_cliente = np.where(np.isin(ctx.clientes, ctx.cenario["clientes_ofensores_otd"]), 0.07, 0.0)
     pickup = rng.random(n) < 0.03
-    p_prazo = np.clip(0.975 - penal_unidade[destino] - penal_cliente[cliente], 0.5, 1.0)
+    p_prazo = np.clip(0.985 - penal_unidade[destino] - penal_cliente[cliente], 0.5, 1.0)
     p_prazo = np.where(pickup, p_prazo * 0.3, p_prazo)
     no_prazo = rng.random(n) < p_prazo
 
@@ -438,7 +438,7 @@ def gerar_bi4_viagens(ctx: Contexto) -> pd.DataFrame:
     ocorrencia = np.where(transito_atrasado, ocorr_atraso,
                           np.where(saida_atrasada, "atraso no carregamento", ocorr_leve))
 
-    fim = (ctx.referencia + 1).astype("datetime64[m]").astype("int64")  # 01/11 00:00
+    fim = (ctx.referencia + np.timedelta64(1, "D")).astype("datetime64[m]").astype("int64")  # 01/11 00:00
     cancelada = rng.random(n) < 0.025
     programada = ~cancelada & (saida_prev >= fim - 6 * 60) & (rng.random(n) < 0.5)
     sem_saida = cancelada | programada | (saida_real >= fim)

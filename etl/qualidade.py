@@ -39,7 +39,7 @@ def _janela(config: dict[str, Any]) -> dict[str, np.datetime64]:
     """Datas de início, referência e fim do dia de referência."""
     inicio = np.datetime64(config["geracao"]["data_inicio"], "D")
     ref = np.datetime64(config["geracao"]["data_referencia"], "D")
-    return {"inicio": inicio, "ref": ref, "fim": (ref + 1).astype("datetime64[m]")}
+    return {"inicio": inicio, "ref": ref, "fim": (ref + np.timedelta64(1, "D")).astype("datetime64[m]")}
 
 
 def _fora(serie: pd.Series, minimo: Any, maximo: Any) -> int:

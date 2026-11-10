@@ -5,7 +5,7 @@ description = "Portfólio de BIs de logística da empresa fictícia Aurora Log"
 requires-python = ">=3.12"
 
 [tool.ruff]
-line-length = 110
+line-length = 120
 target-version = "py312"
 extend-exclude = [".venv", "dist", "_prompts", "referencias"]
 
@@ -13,8 +13,9 @@ extend-exclude = [".venv", "dist", "_prompts", "referencias"]
 select = ["E", "F", "W", "I", "UP", "B"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["bases", "calendario", "configuracao", "dados_io", "dicionario", "qualidade", "montar_dist"]
+known-first-party = ["bases", "calendario", "configuracao", "dados_io", "dicionario", "gerar_dados", "montar_dist", "qualidade", "servidor"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["etl", "scripts"]
+markers = ["lento: executa o gerador de dados duas vezes"]

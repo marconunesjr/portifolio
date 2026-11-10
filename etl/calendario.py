@@ -13,6 +13,7 @@ from typing import Any
 
 import numpy as np
 
+UM_DIA = np.timedelta64(1, "D")
 DIAS_SEMANA = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado", "domingo"]
 
 
@@ -51,9 +52,12 @@ class Calendario:
 
     def dias_uteis_entre(self, inicio: Any, fim: Any) -> np.ndarray:
         """Conta os dias úteis em (inicio, fim]; negativo se fim for anterior a inicio."""
-        a = np.asarray(inicio, dtype="datetime64[D]") + 1
-        b = np.asarray(fim, dtype="datetime64[D]") + 1
-        return np.busday_count(a, b, weekmask=self.mascara, holidays=self.feriados)
+        a = np.asarray(inicio, dtype="datetime64[D]")
+        b = np.asarray(fim, dtype="datetime64[D]")
+        menor, maior = np.minimum(a, b), np.maximum(a, b)
+        contagem = np.busday_count(menor + UM_DIA, maior + UM_DIA, weekmask=self.mascara,
+                                   holidays=self.feriados)
+        return np.where(b >= a, contagem, -contagem)
 
     def somar_dias_uteis(self, datas: Any, quantidade: Any) -> np.ndarray:
         """Desloca cada data em N dias úteis (N negativo volta no tempo).

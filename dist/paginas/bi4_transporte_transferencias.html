@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transporte e Transferências · Aurora Log</title>
+  <meta name="description" content="BI de transporte da Aurora Log (empresa fictícia): SLA de trânsito e de expedição, atraso médio, Pareto de ocorrências e % transferido. Dados fictícios.">
+  <link rel="icon" href="../assets/icone.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/estilo.css">
+  <script>try { var t = localStorage.getItem('aurora-tema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script src="../assets/vendor/echarts.min.js" defer></script>
+  <script type="module" src="../js/paginas/bi4.js"></script>
+</head>
+<body>
+  <header class="topo" id="topo"></header>
+  <main class="conteudo">
+    <section class="intro-bi">
+      <span class="kicker">BI 4 de 5 · Transporte</span>
+      <h1>Transporte e Transferências</h1>
+      <p class="pergunta">As viagens saem e chegam no horário?</p>
+      <div class="metadados">
+        <span class="etiqueta">Data de referência: <strong data-referencia>31/10/2026</strong></span>
+        <span class="etiqueta etiqueta-aviso">Dados fictícios</span>
+        <span>K15 a K19 · período filtra a data da saída prevista (K19: data da transferência)</span>
+      </div>
+    </section>
+
+    <form class="filtros" id="filtros" aria-label="Filtros" onsubmit="return false"></form>
+    <p id="carregando" class="carregando">Carregando dados…</p>
+
+    <div id="area-bi" hidden>
+      <section class="kpis" id="kpis" aria-label="Indicadores principais"></section>
+      <section class="paineis">
+        <article class="painel dois-tercos">
+          <h2>SLA de trânsito por dia (K15)</h2>
+          <p class="sub">% de viagens finalizadas com duração real menor ou igual à prevista, por dia da saída prevista.</p>
+          <div class="grafico" id="g-transito-diario" role="img" aria-label="SLA de trânsito diário com a meta"></div>
+        </article>
+        <article class="painel terco">
+          <h2>Pareto de ocorrências (K18)</h2>
+          <p class="sub" id="t-pareto"></p>
+          <div class="grafico" id="g-pareto" role="img" aria-label="Viagens por tipo de ocorrência com percentual acumulado"></div>
+        </article>
+        <article class="painel meio">
+          <h2>SLA de trânsito por fornecedor</h2>
+          <p class="sub">Que transportador cobrar: pior primeiro.</p>
+          <div class="grafico" id="g-fornecedor" role="img" aria-label="SLA de trânsito por fornecedor"></div>
+          <div id="l-fornecedor"></div>
+        </article>
+        <article class="painel meio">
+          <h2>SLA de expedição por unidade de origem (K16)</h2>
+          <p class="sub">% de viagens que saíram até o horário da malha.</p>
+          <div class="grafico" id="g-expedicao" role="img" aria-label="SLA de expedição por unidade de origem"></div>
+          <div id="l-expedicao"></div>
+        </article>
+        <article class="painel meio">
+          <h2>% transferido por unidade de origem (K19)</h2>
+          <p class="sub">CT-es confirmados na transferência ÷ CT-es dos manifestos.</p>
+          <div class="grafico" id="g-transferido" role="img" aria-label="Percentual transferido por unidade de origem"></div>
+          <div id="l-transferido"></div>
+        </article>
+        <article class="painel meio">
+          <h2>Rotas com mais atraso (K17)</h2>
+          <p class="sub">Ordenadas pelo total de horas de atraso na chegada; rotas com ao menos 5 viagens finalizadas.</p>
+          <div id="t-rotas"></div>
+        </article>
+      </section>
+    </div>
+
+    <details class="nota">
+      <summary>Nota metodológica e fórmulas</summary>
+      <dl>
+        <dt>K15 — SLA de trânsito (meta ≥ 92%)</dt>
+        <dd>Viagens finalizadas com (<code>termino_real</code> − <code>saida_real</code>) menor ou igual a (<code>termino_previsto</code> − <code>saida_prevista</code>) ÷ viagens finalizadas. Mede o trânsito, sem misturar o atraso de saída.</dd>
+        <dt>K16 — SLA de expedição (meta ≥ 95%)</dt>
+        <dd>Viagens com <code>saida_real</code> até <code>saida_prevista</code> ÷ viagens com <code>saida_real</code> preenchida.</dd>
+        <dt>K17 — Tempo médio de atraso</dt>
+        <dd>Média de (<code>termino_real</code> − <code>termino_previsto</code>), em horas, das viagens finalizadas que terminaram depois do previsto.</dd>
+        <dt>K18 — Ocorrências por tipo</dt>
+        <dd>Contagem de viagens por <code>ocorrencia</code>, exceto "sem ocorrência", em Pareto; o % acumulado aparece no rótulo de cada barra.</dd>
+        <dt>K19 — % transferido (meta ≥ 98%)</dt>
+        <dd>Soma de <code>ctes_transferidos</code> ÷ soma de <code>ctes_total</code> dos manifestos; o período filtra <code>data_transferencia</code>.</dd>
+      </dl>
+      <p>Viagens canceladas ficam fora de todos os KPIs. O filtro de unidade usa a unidade de origem; o de cliente usa o cliente principal da viagem e o cliente do manifesto. Semáforo: amarelo até 3 p.p. abaixo da meta (K19: 1 p.p.); vermelho além disso.</p>
+    </details>
+  </main>
+  <footer class="rodape" id="rodape"></footer>
+</body>
+</html>

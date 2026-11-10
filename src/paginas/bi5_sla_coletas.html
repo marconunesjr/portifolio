@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SLA de Coletas · Aurora Log</title>
+  <meta name="description" content="BI de coletas da Aurora Log (empresa fictícia): SLA de coleta, aging, cancelamento por motivo e status por unidade. Dados fictícios.">
+  <link rel="icon" href="../assets/icone.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/estilo.css">
+  <script>try { var t = localStorage.getItem('aurora-tema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script src="../assets/vendor/echarts.min.js" defer></script>
+  <script type="module" src="../js/paginas/bi5.js"></script>
+</head>
+<body>
+  <header class="topo" id="topo"></header>
+  <main class="conteudo">
+    <section class="intro-bi">
+      <span class="kicker">BI 5 de 5 · Coletas</span>
+      <h1>SLA de Coletas</h1>
+      <p class="pergunta">Estamos coletando dentro do prazo?</p>
+      <div class="metadados">
+        <span class="etiqueta">Data de referência: <strong data-referencia>31/10/2026</strong></span>
+        <span class="etiqueta etiqueta-aviso">Dados fictícios</span>
+        <span>K20 a K23 · período filtra a data da solicitação</span>
+      </div>
+    </section>
+
+    <form class="filtros" id="filtros" aria-label="Filtros" onsubmit="return false"></form>
+    <p id="carregando" class="carregando">Carregando dados…</p>
+
+    <div id="area-bi" hidden>
+      <section class="kpis" id="kpis" aria-label="Indicadores principais"></section>
+      <section class="paineis">
+        <article class="painel dois-tercos">
+          <h2>SLA de coleta por dia de solicitação (K20)</h2>
+          <p class="sub">% de coletas retiradas pelo motorista até o prazo.</p>
+          <div class="grafico" id="g-sla-diario" role="img" aria-label="SLA de coleta diário com a meta"></div>
+        </article>
+        <article class="painel terco">
+          <h2>Cancelamento por motivo (K22)</h2>
+          <p class="sub">% das solicitações do período.</p>
+          <div class="grafico" id="g-motivos" role="img" aria-label="Percentual de cancelamento por motivo"></div>
+        </article>
+        <article class="painel meio">
+          <h2>SLA de coleta por regional</h2>
+          <p class="sub">Pior regional primeiro.</p>
+          <div class="grafico baixo" id="g-regional" role="img" aria-label="SLA de coleta por regional"></div>
+          <div id="l-regional"></div>
+        </article>
+        <article class="painel meio">
+          <h2>SLA de coleta por unidade</h2>
+          <p class="sub">Pior unidade primeiro.</p>
+          <div class="grafico alto" id="g-unidade" role="img" aria-label="SLA de coleta por unidade"></div>
+          <div id="l-unidade"></div>
+        </article>
+        <article class="painel">
+          <h2>Coletas por status e unidade (K23)</h2>
+          <p class="sub">Situação das solicitações do período em cada unidade.</p>
+          <div class="grafico" id="g-status" role="img" aria-label="Coletas por status e por unidade"></div>
+          <div id="l-status"></div>
+        </article>
+      </section>
+    </div>
+
+    <details class="nota">
+      <summary>Nota metodológica e fórmulas</summary>
+      <dl>
+        <dt>K20 — SLA de coleta (meta ≥ 90%)</dt>
+        <dd>Coletas com <code>retirada_motorista</code> preenchida e até o <code>prazo</code> ÷ coletas solicitadas, exceto canceladas. Coleta em aberto com prazo até a data de referência conta como fora do prazo; com prazo futuro fica fora do denominador.</dd>
+        <dt>K21 — Aging da coleta</dt>
+        <dd>Média dos dias úteis entre <code>deposito_ponto</code> e <code>retirada_motorista</code>, só coletas retiradas.</dd>
+        <dt>K22 — % cancelamento</dt>
+        <dd>Coletas com status cancelada ÷ coletas solicitadas, total e por motivo.</dd>
+        <dt>K23 — Coletas por status e unidade</dt>
+        <dd>Contagem de coletas por status (solicitada, depositada, coletada, cancelada) e por unidade.</dd>
+      </dl>
+      <p>Dia útil: segunda a sexta, exceto feriado nacional. Comparação: mesmo número de dias imediatamente anterior ao período filtrado. Semáforo do K20: verde a partir de 90%; amarelo até 4 p.p. abaixo; vermelho além disso.</p>
+    </details>
+  </main>
+  <footer class="rodape" id="rodape"></footer>
+</body>
+</html>

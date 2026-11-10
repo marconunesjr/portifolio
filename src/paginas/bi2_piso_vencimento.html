@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Piso – Vencimento por Cliente · Aurora Log</title>
+  <meta name="description" content="BI de armazenagem da Aurora Log (empresa fictícia): piso vencido, piso total, aging, classificação de vencimento e cargas sem entrada. Dados fictícios.">
+  <link rel="icon" href="../assets/icone.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/estilo.css">
+  <script>try { var t = localStorage.getItem('aurora-tema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script src="../assets/vendor/echarts.min.js" defer></script>
+  <script type="module" src="../js/paginas/bi2.js"></script>
+</head>
+<body>
+  <header class="topo" id="topo"></header>
+  <main class="conteudo">
+    <section class="intro-bi">
+      <span class="kicker">BI 2 de 5 · Armazenagem</span>
+      <h1>Piso – Vencimento por Cliente</h1>
+      <p class="pergunta">O que está parado no piso e o que vence primeiro?</p>
+      <div class="metadados">
+        <span class="etiqueta">Data de referência: <strong data-referencia>31/10/2026</strong></span>
+        <span class="etiqueta etiqueta-aviso">Dados fictícios</span>
+        <span>K07 a K11 · foto do piso na data de referência</span>
+      </div>
+    </section>
+
+    <form class="filtros" id="filtros" aria-label="Filtros" onsubmit="return false"></form>
+    <p id="carregando" class="carregando">Carregando dados…</p>
+
+    <div id="area-bi" hidden>
+      <section class="kpis" id="kpis" aria-label="Indicadores principais"></section>
+      <section class="paineis">
+        <article class="painel meio">
+          <h2>Piso por unidade (K08 e K10)</h2>
+          <p class="sub">CT-es parados em cada unidade, por situação de vencimento.</p>
+          <div class="grafico alto" id="g-piso-unidade" role="img" aria-label="Piso por unidade e situação de vencimento"></div>
+          <div id="l-piso-unidade"></div>
+        </article>
+        <article class="painel meio">
+          <h2>% do piso vencido por unidade (K07)</h2>
+          <p class="sub">Pior unidade primeiro. Aqui, quanto menor, melhor.</p>
+          <div class="grafico alto" id="g-vencido-unidade" role="img" aria-label="Percentual do piso vencido por unidade"></div>
+          <div id="l-vencido-unidade"></div>
+        </article>
+        <article class="painel terco">
+          <h2>Aging do piso (K09)</h2>
+          <p class="sub">Dias corridos desde o último evento até a data de referência.</p>
+          <div class="grafico" id="g-aging" role="img" aria-label="CT-es no piso por faixa de dias parados"></div>
+        </article>
+        <article class="painel dois-tercos">
+          <h2>Piso por cliente</h2>
+          <p class="sub">Quem tem mais carga parada e quanto dela já venceu.</p>
+          <div class="grafico alto" id="g-piso-cliente" role="img" aria-label="Piso por cliente e situação de vencimento"></div>
+          <div id="l-piso-cliente"></div>
+        </article>
+        <article class="painel terco">
+          <h2>Transferidos sem entrada (K11)</h2>
+          <p class="sub">Chegaram por transferência, mas sem registro de entrada na unidade.</p>
+          <div class="grafico" id="g-sem-entrada" role="img" aria-label="CT-es transferidos sem entrada por unidade"></div>
+        </article>
+        <article class="painel dois-tercos">
+          <h2>O que vence primeiro</h2>
+          <p class="sub">Fila de prioridade: limite mais antigo no topo (vencidos primeiro).</p>
+          <div id="t-fila"></div>
+        </article>
+      </section>
+    </div>
+
+    <details class="nota">
+      <summary>Nota metodológica e fórmulas</summary>
+      <dl>
+        <dt>K07 — % do piso vencido (meta ≤ 5%)</dt>
+        <dd>CT-es no piso com <code>limite_cliente</code> anterior à data de referência ÷ CT-es no piso.</dd>
+        <dt>K08 — Piso total</dt>
+        <dd>Contagem de CT-es no piso, por unidade atual e por cliente.</dd>
+        <dt>K09 — Aging do piso</dt>
+        <dd>Dias corridos entre <code>data_evento</code> e a data de referência, contados por faixa (0–1, 2–3, 4–7, 8+).</dd>
+        <dt>K10 — Classificação de vencimento</dt>
+        <dd>Vencido: limite anterior à referência; vence hoje: limite igual à referência; a vencer: limite posterior.</dd>
+        <dt>K11 — Não entrou na unidade</dt>
+        <dd>CT-es com <code>transferido_em</code> preenchido e <code>entrou_unidade</code> falso.</dd>
+      </dl>
+      <p>Por ser uma foto, o filtro de período atua sobre o limite do cliente e não há comparação com período anterior. A unidade do filtro é a unidade atual da carga. Semáforo do K07: verde até 5%; amarelo até 3 p.p. acima; vermelho além disso. Denominador zero aparece como "sem dados".</p>
+    </details>
+  </main>
+  <footer class="rodape" id="rodape"></footer>
+</body>
+</html>
