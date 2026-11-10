@@ -50,9 +50,54 @@
 - **Alternativas:** criar turnos fictícios.
 - **Consequências:** nenhuma regra de virada de dia operacional é necessária.
 
+### ADR-009 — Formato dos JSON e parâmetros exportados (Fase 1)
+- **Contexto:** a produção por hora tem 120 mil linhas e o limite é de 5 MB por arquivo (RNF03).
+- **Decisão:** gravar todas as bases em JSON colunar; colunas de texto e data com poucos valores distintos viram domínio + índices (`etl/dados_io.py` grava, `src/js/dados.js` lê). O gerador exporta `src/dados/config_site.json` com datas, calendário, metas, faixas e regionais. Os parâmetros do cenário sintético (ofensores, porte das unidades, sazonalidade, clientes por unidade, segmentos) ficam numa nova seção `cenario` e em `segmentos_clientes` de `config.yaml`.
+- **Alternativas:** um JSON de objetos por linha (cerca de 3 vezes maior); agregar a produção dos dias antigos (perderia o detalhe hora × dia nos 90 dias).
+- **Consequências:** 5,7 MB no total, maior arquivo com 1,7 MB; nenhuma agregação foi necessária em `bi3_producao_hora`.
+
+### ADR-010 — Horário de produção por tipo de dia
+- **Contexto:** docs/03 prevê cerca de 120 mil linhas em `bi3_producao_hora` e docs/07 lê a produção das 6h às 21h.
+- **Decisão:** cada unidade atende 8 clientes (`cenario.clientes_por_unidade`); a produção existe das 6h às 21h em dia útil, das 6h às 15h no sábado e das 8h às 15h em domingo e feriado. Fora desses horários não há linha.
+- **Consequências:** exatamente 120.000 linhas e 8.640 linhas de forecast; o mapa de calor mostra a operação menor no fim de semana.
+
+### ADR-011 — Colunas de filtro nas bases do BI 1 e K06 sem cliente
+- **Contexto:** docs/07 não diz qual unidade dos CT-es o filtro usa, e `bi1_entregas_courier` não tem cliente.
+- **Decisão:** nos CT-es, unidade e UF/regional usam a unidade de destino (quem entrega); nas emissões, a unidade de origem; nas entregas por courier, a unidade do courier. O filtro de cliente não altera o K06, e a página informa isso (mesma solução do ADR-006 para o K14).
+- **Alternativas:** filtrar CT-es pela origem (misturaria o desvio de quem emite com o de quem entrega).
+- **Consequências:** "onde está o desvio" aponta a unidade de entrega.
+
+### ADR-012 — Complementos às regras de borda do ADR-007
+- **Contexto:** dois casos não estão escritos em docs/07.
+- **Decisão:** (a) no K01, K03 e K04, CT-e em aberto com `limite_cliente` depois da data de referência ainda não venceu e fica fora do denominador, por analogia com a regra do K20 (nos dados atuais não há esse caso, pois todo limite está dentro dos 90 dias); (b) no K03, atraso de 0 dia útil (por exemplo, vencido na sexta e em aberto na referência, que é um sábado) entra na primeira faixa ("1"). As fórmulas e metas de docs/07 não foram alteradas.
+- **Consequências:** os dois casos têm teste em `tests/kpis.test.js`. Entram na revisão da pendência P03.
+
+### ADR-013 — Recálculo em Python só para validar os dados
+- **Contexto:** docs/08 pede que o gerador falhe se L14 ou P01–P06 não passarem, o que exige calcular percentuais no Python; o ADR-004 pede uma única implementação de cada KPI.
+- **Decisão:** a implementação oficial continua sendo `src/js/kpis.js`. `etl/qualidade.py` recalcula apenas os percentuais gerais e por grupo usados nas checagens, e `tests/test_consistencia_kpis.py` compara esses números com os de `kpis.js` rodando no Node.
+- **Consequências:** se uma fórmula mudar em `kpis.js` sem mudar a checagem, o teste de consistência falha.
+
+### ADR-014 — Visual: Pareto sem segundo eixo e cores de status reservadas
+- **Contexto:** o Pareto clássico usa um segundo eixo para o % acumulado; gráficos com dois eixos de valor confundem a leitura.
+- **Decisão:** o Pareto de ocorrências (K18) mostra as barras ordenadas e o % acumulado no rótulo de cada barra. Verde, amarelo e vermelho só aparecem como semáforo (sempre com ícone e texto) ou na classificação de vencimento; vermelho sempre significa fora da meta. As séries usam uma paleta categórica testada para daltonismo, em versões próprias para o tema claro e o escuro.
+- **Consequências:** nenhum gráfico tem dois eixos de valor.
+
+### ADR-015 — Ferramentas e servidor local
+- **Contexto:** o ECharts precisa de versão fixada; no Windows, `python -m http.server` pode entregar `.js` como `text/plain`, e o navegador recusa módulos JavaScript assim. O site também precisa funcionar dentro de uma subpasta.
+- **Decisão:** ECharts 5.6.0 copiado de `cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js` para `src/assets/vendor/`. `scripts/servidor.py` serve uma pasta com tipos MIME corretos sob `/portifolio/`, como no GitHub Pages; o teste de fumaça usa o mesmo servidor. `dist/` é versionada e o workflow confere que ela é cópia fiel de `src/` antes de publicar. `node --test` exige Node 20 ou mais novo.
+- **Consequências:** `python scripts/servidor.py` substitui `python -m http.server` nas instruções.
+
+### ADR-016 — Falso positivo da checagem de anonimização na biblioteca ECharts
+- **Contexto:** a busca de termos proibidos ignora maiúsculas e minúsculas e procura trechos de palavra. Um dos termos curtos aparece dentro do nome em inglês do componente "linha do tempo", que faz parte do núcleo de qualquer build do ECharts 5.6.0 (completa ou "common"). Os únicos achados em `src/` e `dist/` estão em `assets/vendor/echarts.min.js`, código de terceiros não editado.
+- **Decisão:** manter o ECharts copiado em `src/assets/vendor/` (stack definida no CLAUDE.md) e excluir a pasta `vendor/` da checagem automática (`tests/test_anonimizacao.py`). Comando manual equivalente, no Windows PowerShell 5.1: `Get-ChildItem -Path src,dist,etl,tests,docs,README.md -Recurse -File | Where-Object FullName -notmatch '\\vendor\\' | Select-String -Pattern '<termos>'`.
+- **Alternativas:** carregar o ECharts por CDN com versão fixada (remove o arquivo do repositório, mas o site passa a depender de um serviço externo); alterar o arquivo minificado da biblioteca (frágil e difícil de atualizar).
+- **Consequências:** fora de `vendor/`, 0 ocorrências. Revisão do autor na pendência P05.
+
 ## Pendências
 | ID | Pendência | Bloqueia a Fase 1? |
 |---|---|---|
 | P01 | Prazo da primeira versão e da publicação: [A DEFINIR] | Não |
 | P02 | Confirmar com o empregador se a publicação de BIs inspirados nos internos é permitida: [A DEFINIR] | Não bloqueia o código; bloqueia a publicação |
-| P03 | Revisão do autor das regras de borda do ADR-007 e das decisões do ADR-006 | Não |
+| P03 | Revisão do autor das regras de borda do ADR-007 e das decisões do ADR-006, ADR-011 e ADR-012 | Não |
+| P04 | Conferir manualmente que os nomes fictícios de clientes de `config/config.yaml` não coincidem com marcas conhecidas (docs/08) | Não bloqueia o código; bloqueia a publicação |
+| P05 | Aprovar a exclusão de `assets/vendor/` na checagem de termos proibidos (ADR-016) ou trocar o ECharts local por CDN | Não |

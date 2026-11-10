@@ -60,5 +60,21 @@ Não se aplica: não existe número oficial de referência. No lugar, cada KPI t
 | Data | Etapa | Resultado |
 |---|---|---|
 | 09/11/2026 | Etapa 1 (documentação) | Busca de marcadores pendentes e de termos proibidos na documentação: 0 ocorrências |
+| 09/11/2026 | Fase 1 (v0.1.0) | Q01–Q09, L01–L14 e P01–P06: todas aprovadas (detalhe abaixo). Termos proibidos em arquivos versionados: 0 ocorrências fora de `assets/vendor/`; na biblioteca ECharts há um falso positivo dentro do nome em inglês do componente "linha do tempo" (ADR-016) |
 
-Os resultados das checagens Q, L e P serão registrados aqui ao final da Fase 1.
+### Fase 1 — execução de `python etl/gerar_dados.py` (semente 42, referência 31/10/2026)
+| ID | Resultado | Limite |
+|---|---|---|
+| Q01 a Q06 | 0 divergências, nulos, duplicidades, chaves órfãs, datas fora da janela e categorias fora da lista | 0 |
+| Q07 | 13 bases dentro de ±10% (ex.: bi3_producao_hora 120.000; bi1_entregas_courier 11.902; bi3_produtividade_operador 9.506) | ±10% |
+| Q08 | Duas gerações idênticas (comparação de hash no gerador e duas execuções do script no pytest) | idênticas |
+| Q09 | 5,68 MB no total; maior arquivo 1,73 MB | ≤ 15 MB; ≤ 5 MB |
+| L01 a L14 | 0 ocorrências em todas | 0 |
+| P01 | OTD geral 92,3% | 88% a 97% |
+| P02 | 2 unidades abaixo de 90% (SSA e REC) | ≥ 2 |
+| P03 | Fim de semana com 33,0% do volume médio de dia útil | < 60% |
+| P04 | Aderência ao forecast geral 97,4% | 85% a 110% |
+| P05 | Pior fornecedor (FN05) 18,6 p.p. abaixo do SLA de trânsito médio | ≥ 10 p.p. |
+| P06 | SLA de coleta geral 88,3% | 80% a 95% |
+
+Os percentuais de L14 e P01–P06 são recalculados em `etl/qualidade.py` e comparados com `src/js/kpis.js` por `tests/test_consistencia_kpis.py` (ADR-013). Cada KPI tem um teste com resultado conhecido em `tests/kpis.test.js`, a partir dos casos de `tests/dados_referencia/`.

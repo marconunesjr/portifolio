@@ -7,21 +7,21 @@ Prazos: [A DEFINIR] (ver pendência P01 em `docs/decisoes.md`).
 - [x] Documentação docs/01 a 08 e decisoes.md
 - [x] config/config.yaml
 
-## Fase 1 — Site completo (v0.1.0)
-- [ ] Gerador de dados sintéticos reprodutível, com validação contra docs/06 (RF11)
-- [ ] Calendário único em Python e em JavaScript
-- [ ] Módulo `kpis.js` com K01 a K23 e um teste por KPI
-- [ ] Identidade visual e componentes comuns (cabeçalho, filtros, cartão de KPI, semáforo)
-- [ ] Página inicial (RF01)
-- [ ] BI Indicadores Operacionais (RF02)
-- [ ] BI Piso – Vencimento por Cliente (RF03)
-- [ ] BI Produção do Dia (RF04)
-- [ ] BI Transporte e Transferências (RF05)
-- [ ] BI SLA de Coletas (RF06)
-- [ ] Filtros e navegação (RF07, RF08)
-- [ ] Nota metodológica e avisos em cada página (RF09)
-- [ ] Checagem de anonimização (RF10)
-- [ ] Workflow do GitHub Pages (RF12)
+## Fase 1 — Site completo (v0.1.0) — concluída em 09/11/2026
+- [x] Gerador de dados sintéticos reprodutível, com validação contra docs/06 (RF11)
+- [x] Calendário único em Python e em JavaScript
+- [x] Módulo `kpis.js` com K01 a K23 e um teste por KPI
+- [x] Identidade visual e componentes comuns (cabeçalho, filtros, cartão de KPI, semáforo)
+- [x] Página inicial (RF01)
+- [x] BI Indicadores Operacionais (RF02)
+- [x] BI Piso – Vencimento por Cliente (RF03)
+- [x] BI Produção do Dia (RF04)
+- [x] BI Transporte e Transferências (RF05)
+- [x] BI SLA de Coletas (RF06)
+- [x] Filtros e navegação (RF07, RF08)
+- [x] Nota metodológica e avisos em cada página (RF09)
+- [x] Checagem de anonimização (RF10)
+- [x] Workflow do GitHub Pages (RF12)
 
 ### Critérios de pronto da Fase 1
 1. `python etl/gerar_dados.py` termina com código 0 e é reprodutível (RF11).

@@ -47,7 +47,9 @@ O projeto não usa credenciais. Se surgir alguma, só em `.env`, nunca no códig
 
 ## Comandos
 ```
-python etl/gerar_dados.py
+python etl/gerar_dados.py      # dados sintéticos + checagens de docs/08
+python scripts/montar_dist.py  # copia src/ para dist/ (rodar antes de cada commit que mexe em src/)
+python scripts/servidor.py     # serve dist/ em http://127.0.0.1:8000/portifolio/
 python -m pytest
 node --test tests/
 ruff check .
